@@ -1,0 +1,64 @@
+
+Gurobi 8.1.1 (win64, Python) logging started 12/19/19 15:00:15
+
+Academic license - for non-commercial use only
+Changed value of parameter method to 2
+   Prev: -1  Min: -1  Max: 5  Default: -1
+Optimize a model with 9 rows, 25 columns and 45 nonzeros
+Variable types: 20 continuous, 5 integer (5 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 2e+01]
+  Objective range  [1e+03, 2e+04]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+01, 2e+01]
+
+Loaded MIP start with objective 210500
+
+Presolve time: 0.01s
+Presolved: 9 rows, 25 columns, 45 nonzeros
+Variable types: 20 continuous, 5 integer (5 binary)
+Root barrier log...
+
+Ordering time: 0.00s
+
+Barrier statistics:
+ AA' NZ     : 2.000e+01
+ Factor NZ  : 4.500e+01
+ Factor Ops : 2.850e+02 (less than 1 second per iteration)
+ Threads    : 1
+
+                  Objective                Residual
+Iter       Primal          Dual         Primal    Dual     Compl     Time
+   0   7.94290841e+05 -2.24842916e+05  7.25e+00 3.75e+03  2.69e+04     0s
+   1   2.34432856e+05  7.59319096e+04  1.78e-15 5.46e-12  3.17e+03     0s
+   2   2.10232015e+05  1.89880475e+05  1.78e-15 1.82e-12  4.07e+02     0s
+   3   2.00964341e+05  1.98582137e+05  2.66e-15 4.89e-12  4.76e+01     0s
+   4   1.99878036e+05  1.99804970e+05  5.58e-14 2.73e-12  1.46e+00     0s
+   5   1.99833638e+05  1.99832960e+05  2.65e-13 3.64e-12  1.36e-02     0s
+   6   1.99833333e+05  1.99833333e+05  1.51e-14 6.03e-12  1.39e-08     0s
+   7   1.99833333e+05  1.99833333e+05  3.11e-15 3.63e-12  1.39e-14     0s
+
+Barrier solved model in 7 iterations and 0.03 seconds
+Optimal objective 1.99833333e+05
+
+
+Root relaxation: objective 1.998333e+05, 6 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 199833.333    0    1 210500.000 199833.333  5.07%     -    0s
+     0     0 200025.455    0    2 210500.000 200025.455  4.98%     -    0s
+     0     0 208000.000    0    2 210500.000 208000.000  1.19%     -    0s
+     0     0 208000.000    0    1 210500.000 208000.000  1.19%     -    0s
+
+Cutting planes:
+  Flow cover: 1
+
+Explored 1 nodes (13 simplex iterations) in 0.04 seconds
+Thread count was 12 (of 12 available processors)
+
+Solution count 1: 210500 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 2.105000000000e+05, best bound 2.105000000000e+05, gap 0.0000%
