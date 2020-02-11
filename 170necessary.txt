@@ -544,7 +544,7 @@ a[2] = 2
 a = (1,2,3,[4,5,6,7],8)
 a[3][0] = 2
 
-答：前面我说了元组的里元素是不能改变的，这句话严格来说是不准确的，如果元组里面元素本身就是可变类型，比如列表，那么在操作这个元素里的对象时，其内存地址也是不变的。a[3] 对应的元素是列表，然后对列表第一个元素赋值，所以最后的结果是： (1,2,3,[2,5,6,7],8)
+答：前面我说了元组里的元素是不能改变的，这句话严格来说是不准确的，如果元组里面元素本身就是可变类型，比如列表，那么在操作这个元素里的对象时，其内存地址也是不变的。a[3] 对应的元素是列表，然后对列表第一个元素赋值，所以最后的结果是： (1,2,3,[2,5,6,7],8)
 
 操作类题目
 
@@ -569,7 +569,7 @@ from datetime import datetime, date
 
 # JSONEncoder 不知道怎么去把这个数据转换成 json 字符串的时候
 # ，它就会去调 default()函数,所以都是重写这个函数来处理它本身不支持的数据类型，
-# default()函数默#认是直接抛异常的。
+# default()函数默认是直接抛异常的。
 class DateToJson(json.JSONEncoder)：
    def default(self, obj)：
        if isinstance(obj, datetime)：
@@ -579,16 +579,17 @@ class DateToJson(json.JSONEncoder)：
        else：
            return json.JSONEncoder.default(self, obj)
 
-
 d = {'name'： 'cxa', 'data'： datetime.now()}
 print(json.dumps(d, cls=DateToJson))
+
 52. json 序列化时，默认遇到中文会转换成 unicode，如果想要保留中文怎么办？
 
 答：可以通过 json.dumps 的 ensure_ascii 参数解决，代码示例如下：
 
 import json
-a=json.dumps({"name"："张三"},ensure_ascii=False)
+a = json.dumps({"name"："张三"},ensure_ascii=False)
 print(a)
+
 53. 有两个磁盘文件 A 和 B，各存放一行字母，要求把这两个文件中的信息合并(按字母顺序排列)，输出到一个新文件 C 中。
 
 答：
@@ -613,19 +614,18 @@ with open("C.txt", "a+") as f：
 
 import datetime
 
-
 def datetime_operate(n： int)：
    now = datetime.datetime.now()  # 获取当前时间
    _new_date = now + datetime.timedelta(days=n)  # 获取指定天数后的新日期
    new_date = _new_date.strftime("%Y%m%d")  # 转换为指定的输出格式
    return new_date
 
-
 if __name__ == '__main__'：
    print(datetime_operate(4))
+
 55. 写一个函数，接收整数参数 n，返回一个函数，函数的功能是把函数的参数和 n 相乘并把结果返回。
 
-答：这个题目考查了闭包的使用代码示例如下，返回函数之类型是函数对象。
+答：这个题目考查了闭包的使用。代码示例如下，返回函数之类型是函数对象。
 
 def mul_operate(num):
    def g(val):
@@ -633,9 +633,9 @@ def mul_operate(num):
 
    return g
 
-
 m = mul_operate(8)
 print(m(5))
+
 56. 下面代码会存在什么问题，如何改进？
 
 def strappend(num)：
@@ -643,25 +643,29 @@ def strappend(num)：
    for i in range(num)：
        str+=str(i)
    return str
+
 答： 首先不应该使用 Python 的内置类似 str 作为变量名这里我把它改为了 s,另外在Python,str 是个不可变对象，每次迭代都会生成新的存储空间，num 越大，创建的 str 对象就会越多，内存消耗越大。使用 yield 改成生成器即可, 还有一点就是命名规范的位置，函数名改为_分割比较好，完整的代码如下:
 
 def str_append(num):
    s = 'first'
    for i in range(num):
-       s += str(i)
+       s += s(i)
        yield s
 
 if __name__ == '__main__':
    for i in str_append(3):
        print(i)
+
 57. 一行代码输出 1-100 之间的所有偶数。
 
-答：可以通过列表生成式，然后使用与操作如果如 1 与之后结果为 0 则表明为偶数，等于 1 则为奇数。
+答：可以通过列表生成式，然后使用 与 操作如果如 1 与之后结果为 0 则表明为偶数，等于 1 则为奇数。
 
 # 方法1
 print([i for i in range(1, 101) if i & 0x1 == 0])
+
 # 方法2：测试发现方法二效率更高
 print(list(range(2, 101, 2)))
+
 58. with 语句的作用，写一段代码？
 
 with 语句适用于对资源进行访问的场合，确保不管使用过程中是否发生异常都会执行必要的“清理”操作，释放资源，比如文件使用后自动关闭、线程中锁的自动获取和释放等。
@@ -670,10 +674,10 @@ with 语句适用于对资源进行访问的场合，确保不管使用过程中
 
 #一般访问文件资源时我们会这样处理：
 
-f = open(
-   'c：\test.txt', 'r')
+f = open('c：\test.txt', 'r')
 data = f.read()
 f.close()
+
 # 这样写没有错，但是容易犯两个毛病：
 # 1. 如果在读写时出现异常而忘了异常处理。
 # 2. 忘了关闭文件句柄
@@ -691,15 +695,16 @@ finally：
 
 with open(r'c：\test.txt', 'r') as f：
    data = f.read()
+
 #with 的实现
 
-class Test：
-   def __enter__(self)：
+class Test:
+   def __enter__(self):
        print('__enter__() is call!')
        return self
 
-   def dosomething(self)：
-       print('dosomethong!')
+   def dosomething(self):
+       print('dosomething!')
 
    def __exit__(self, exc_type, exc_value, traceback)：
        print('__exit__() is call!')
@@ -724,7 +729,7 @@ class Test：
 
    def dosomething(self)：
        x = 1/0
-       print('dosomethong!')
+       print('dosomething!')
 
    def __exit__(self, exc_type, exc_value, traceback)：
        print('__exit__() is call!')
@@ -734,8 +739,8 @@ class Test：
        print('__exit()__ is call!')
        return True
 
-
 with Test() as sample：
+
 59. Python 字典和 json 字符串相互转化方法
 
 答:
@@ -755,6 +760,7 @@ import json
 dic = {'a'： 123, 'b'： "456", 'c'： "liming"}
 dic_str = json.loads(str(dic).replace("'", "\""))
 print(dic_str)
+
 下面我解释下上面代码是测试什么:
 
 首先 json.loads(jsonstr) 这里面的参数只能是 jsonstr 格式的字符串.
@@ -762,6 +768,7 @@ print(dic_str)
 如果直接使用 json.loads(str(dic)) 你会发现出现错误，原因就是，单引号的字符串不符合Json的标准格式所以再次使用了 replace("'", "\"")。得到字典
 其实这个例子主要目的是告诉大家 Json 的标准格式是不支持单引号型字符串的，否则会出现以下错误。
 json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+
 60. 请写一个 Python 逻辑，计算一个文件中的大写字母数量
 
 答：
@@ -772,12 +779,13 @@ with open('A.txt') as fs：
        if i.isupper()：
            count += 1
 print(count)
-61. 请写一段 Python连接Mongo数据库，然后的查询代码。
+
+61. 请写一段 Python 连接 Mongo 数据库，然后的查询代码。
 
 答:
 
 # -*- coding: utf-8 -*-
-# @Author : 陈祥安
+# @Author : Discount
 import pymongo
 db_configs = {
    'type': 'mongo',
@@ -808,42 +816,48 @@ class Mongo():
 if __name__ == '__main__':
    m = Mongo()
    print(m.find_data())
-62.说一说Redis的基本类型
+
+62.说一说 Redis 的基本类型
 
 答: Redis 支持五种数据类型： string（字符串） 、 hash（哈希）、list（列表） 、 set（集合） 及 zset(sorted set： 有序集合)。
 
-63. 请写一段 Python连接Redis数据库的代码。
+63. 请写一段 Python 连接 Redis 数据库的代码。
 
 答:
 
 from redis import StrictRedis, ConnectionPool
-redis_url="redis://:xxxx@112.27.10.168:6379/15"
+redis_url = "redis://:xxxx@112.27.10.168:6379/15"
 pool = ConnectionPool.from_url(redis_url, decode_responses=True)
-r= StrictRedis(connection_pool=pool)
-64. 请写一段 Python连接Mysql数据库的代码。
+r = StrictRedis(connection_pool=pool)
+
+64. 请写一段 Python 连接 Mysql 数据库的代码。
 
 答:
 
 conn = pymysql.connect(host='localhost',
 port=3306, user='root',
 passwd='1234', db='user', charset='utf8mb4')#声明mysql连接对象
-cursor=conn.cursor(cursor=pymysql.cursors.DictCursor)#查询结果以字典的形式
+cursor = conn.cursor(cursor = pymysql.cursors.DictCursor)#查询结果以字典的形式
 cursor.execute(sql语句字符串)#执行sql语句
 conn.close()#关闭链接
-65.了解Redis的事务么
 
-答: 简单理解，可以认为 redis 事务是一些列 redis 命令的集合，并且有如下两个特点： 1.事务是一个单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。 2.事务是一个原子操作：事务中的命令要么全部被执行，要么全部都不执行。 一般来说，事务有四个性质称为ACID，分别是原子性，一致性，隔离性和持久性。 一个事务从开始到执行会经历以下三个阶段：
+65. 了解 Redis 的事务么
+
+答: 简单理解，可以认为 redis 事务是一系列 redis 命令的集合，并且有如下两个特点：
+1.事务是一个单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。
+2.事务是一个原子操作：事务中的命令要么全部被执行，要么全部都不执行。 一般来说，事务有四个性质称为ACID，分别是原子性，一致性，隔离性和持久性。 一个事务从开始到执行会经历以下三个阶段：
 
 开始事务
 命令入队
 执行事务 代码示例:
+
 import redis
 import sys
 def run():
    try:
-       conn=redis.StrictRedis('192.168.80.41')
-      # Python中redis事务是通过pipeline的封装实现的
-       pipe=conn.pipeline()
+       conn = redis.StrictRedis('192.168.80.41')
+      # Python 中 redis 事务是通过 pipeline 的封装实现的
+       pipe = conn.pipeline()
        pipe.sadd('s001','a')
        sys.exit()
        #在事务还没有提交前退出，所以事务不会被执行。
@@ -855,9 +869,13 @@ def run():
        pass
 if __name__=="__main__":
      run()
+
 66.了解数据库的三范式么？
 
-答: 经过研究和对使用中问题的总结，对于设计数据库提出了一些规范，这些规范被称为范式 一般需要遵守下面3范式即可: 第一范式（1NF）：强调的是列的原子性，即列不能够再分成其他几列。 第二范式（2NF）：首先是 1NF，另外包含两部分内容，一是表必须有一个主键；二是没有包含在主键中的列必须完全依赖于主键，而不能只依赖于主键的一部分。 第三范式（3NF）：首先是 2NF，另外非主键列必须直接依赖于主键，不能存在传递依赖。即不能存在：非主键列 A 依赖于非主键列 B，非主键列 B 依赖于主键的情况。
+答: 经过研究和对使用中问题的总结，对于设计数据库提出了一些规范，这些规范被称为范式 一般需要遵守下面3范式即可:
+第一范式（1NF）：强调的是列的原子性，即列不能够再分成其他几列。
+第二范式（2NF）：首先是 1NF，另外包含两部分内容，一是表必须有一个主键；二是没有包含在主键中的列必须完全依赖于主键，而不能只依赖于主键的一部分。
+第三范式（3NF）：首先是 2NF，另外非主键列必须直接依赖于主键，不能存在传递依赖。即不能存在：非主键列 A 依赖于非主键列 B，非主键列 B 依赖于主键的情况。
 
 67.了解分布式锁么
 
@@ -865,7 +883,15 @@ if __name__=="__main__":
 
 任何一个时间点必须只能够有一个客户端拥有锁。
 不能够有死锁，也就是最终客户端都能够获得锁，尽管可能会经历失败。
-错误容忍性要好，只要有大部分的Redis实例存活，客户端就应该能够获得锁。 分布式锁的条件 互斥性：分布式锁需要保证在不同节点的不同线程的互斥 可重入性：同一个节点上的同一个线程如果获取了锁之后，能够再次获取这个锁。 锁超时：支持超时释放锁，防止死锁 高效，高可用：加锁和解锁需要高效，同时也需要保证高可用防止分布式锁失效，可以增加降级。 支持阻塞和非阻塞：可以实现超时获取失败，tryLock(long timeOut) 支持公平锁和非公平锁
+错误容忍性要好，只要有大部分的Redis实例存活，客户端就应该能够获得锁。
+
+分布式锁的条件
+互斥性：分布式锁需要保证在不同节点的不同线程的互斥
+可重入性：同一个节点上的同一个线程如果获取了锁之后，能够再次获取这个锁。
+锁超时：支持超时释放锁，防止死锁
+高效，高可用：加锁和解锁需要高效，同时也需要保证高可用防止分布式锁失效，可以增加降级。
+支持阻塞和非阻塞：可以实现超时获取失败，tryLock(long timeOut) 支持公平锁和非公平锁
+
 分布式锁的实现方案 1、数据库实现（乐观锁） 2、基于zookeeper的实现 3、基于Redis的实现（推荐）
 
 68.用 Python 实现一个 Reids 的分布式锁的功能
@@ -886,13 +912,13 @@ class RedisLock:
        self.lock_key = ""
    @staticmethod
    def my_float(timestamp):
-       """
+       #"""
        Args:
            timestamp:
        Returns:
            float或者0
            如果取出的是None，说明原本锁并没人用，getset已经写入，返回0，可以继续操作。
-       """
+       #"""
        if timestamp:
            return float(timestamp)
        else:
@@ -939,6 +965,7 @@ def my_func():
 
 if __name__ == "__main__":
    my_func()
+
 69.写一段 Python 使用 mongo 数据库创建索引的代码:
 
 答:
@@ -968,15 +995,15 @@ class Mongo():
        self.db1 = self.client[db]
 
    def add_index(self):
-       """
-         通过create_index添加索引
-       """
+    #   """
+    #     通过create_index添加索引
+    #   """
        self.db1.test.create_index([('name', pymongo.ASCENDING)], unique=True)
 
    def get_index(self,):
-       """
-         查看索引列表
-       """
+    #   """
+    #     查看索引列表
+    #   """
        indexlist=self.db1.test.list_indexes()
        for index in indexlist:
            print(index)
@@ -1014,6 +1041,7 @@ def foo(a,b,c)：
 if __name__ == '__main__'：
    foo(1,2,3)
     #decorate()
+
 71. Python 垃圾回收机制？
 
 答：Python 不像 C++，Java 等语言一样，他们可以不用事先声明变量类型而直接对变量进行赋值。对 Python 语言来讲，对象的类型和内存都是在运行时确定的。这也是为什么我们称 Python 语言为动态类型的原因。
@@ -1034,28 +1062,25 @@ class Bar：
 if __name__ == '__main__'：
    b = Bar()
    b()
+
 73. 如何判断一个对象是函数还是方法？
 
 答：看代码已经结果就懂了
 
 from types import MethodType, FunctionType
 
-
 class Bar：
    def foo(self)：
        pass
 
-
 def foo2()：
    pass
-
 
 def run()：
    print("foo 是函数", isinstance(Bar().foo, FunctionType))
    print("foo 是方法", isinstance(Bar().foo, MethodType))
    print("foo2 是函数", isinstance(foo2, FunctionType))
    print("foo2 是方法", isinstance(foo2, MethodType))
-
 
 if __name__ == '__main__'：
    run()
@@ -1065,13 +1090,14 @@ foo 是函数 False
 foo 是方法 True
 foo2 是函数 True
 foo2 是方法 False
+
 74. @classmethod 和 @staticmethod 用法和区别
 
-答： 相同之处：@staticmethod 和@classmethod 都可以直接类名.方法名()来调用，不用在示例化一个类。 @classmethod 我们要写一个只在类中运行而不在实例中运行的方法。如果我们想让方法不在实例中运行，可以这么做：
+答：相同之处：@staticmethod 和@classmethod 都可以直接类名.方法名()来调用，不用再示例化一个类。
+@classmethod 我们要写一个只在类中运行而不在实例中运行的方法。如果我们想让方法不在实例中运行，可以这么做：
 
 def iget_no_of_instance(ins_obj)：
    return ins_obj.__class__.no_inst
-
 
 class Kls(object)：
    no_inst = 0
@@ -1079,14 +1105,13 @@ class Kls(object)：
    def __init__(self)：
        Kls.no_inst = Kls.no_inst + 1
 
-
 ik1 = Kls()
 ik2 = Kls()
 print(iget_no_of_instance(ik1))
+
 @staticmethod 经常有一些跟类有关系的功能但在运行时又不需要实例和类参与的情况下需要用到静态方法
 
 IND = 'ON'
-
 
 class Kls(object)：
    def __init__(self, data)：
@@ -1105,10 +1130,10 @@ class Kls(object)：
            self.db = 'New db connection'
        print('DB connection made for： ', self.data)
 
-
 ik1 = Kls(12)
 ik1.do_reset()
 ik1.set_db()
+
 75. Python 中的接口如何实现？
 
 答： 接口提取了一群类共同的函数，可以把接口当做一个函数的集合，然后让子类去实现接口中的函数。但是在 Python 中根本就没有一个叫做 interface 的关键字，如果非要去模仿接口的概念，可以使用抽象类来实现。抽象类是一个特殊的类，它的特殊之处在于只能被继承，不能被实例化。使用 abc 模块来实现抽象类。
@@ -1123,7 +1148,9 @@ ik1.set_db()
 
 78. hasattr()、getattr()、setattr() 的用法
 
-答：这三个方法属于 Python 的反射机制里面的，hasattr 可以判断一个对象是否含有某个属性，getattr 可以充当 get 获取对象属性的作用。而 setattr 可以充当 person.name = "liming"的赋值操作。代码示例如下：
+答：这三个方法属于 Python 的反射机制里面的，hasattr 可以判断一个对象是否含有某个属性，
+    getattr 可以充当 get 获取对象属性的作用。
+    而 setattr 可以充当 person.name = "liming"的赋值操作。代码示例如下：
 
 class Person()：
    def __init__(self)：
@@ -1142,18 +1169,16 @@ class Person()：
        print(getattr(self, "age"))
        print(getattr(self, "sex"))
 
-
 def run()：
    if hasattr(Person, "show")：
        print("判断 Person 类是否含有 show 方法")
 
-
    Person().set_name()
    Person().get_name()
 
-
 if __name__ == '__main__'：
    run()
+
 79. 请列举你知道的 Python 的魔法方法及用途。
 
 答：
@@ -1165,14 +1190,15 @@ if __name__ == '__main__'：
 __new__是对象实例化时第一个调用的方法，它只取下 cls 参数，并把其他参数传给 __init__ 。 __new__很少使用，但是也有它适合的场景，尤其是当类继承自一个像元组或者字符串这样不经常改变的类型的时候.
 
 3 __del__：
-__new__和 __init__是对象的构造器， __del__是对象的销毁器。它并非实现了语句 del x (因此该语句不等同于 x.__del__())。而是定义了当对象被垃圾回收时的行为。 当对象需要在销毁时做一些处理的时候这个方法很有用，比如 socket 对象、文件对象。但是需要注意的是，当 Python 解释器退出但对象仍然存活的时候，__del__并不会 执行。 所以养成一个手工清理的好习惯是很重要的，比如及时关闭连接。
+__new__和 __init__是对象的构造器， __del__是对象的销毁器。它并非实现了语句 del x (因此该语句不等同于 x.__del__())。而是定义了当对象被垃圾回收时的行为。 当对象需要在销毁时做一些处理的时候这个方法很有用，比如 socket 对象、文件对象。但是需要注意的是，当 Python 解释器退出但对象仍然存活的时候，__del__并不会执行。 所以养成一个手工清理的好习惯是很重要的，比如及时关闭连接。
+
 80. 如何知道一个 Python 对象的类型？
 
 答：可以通过 type 方法
 
 81. Python 的传参是传值还是传址？
 
-答：Python 中的传参即不是传值也不是传地址，传的是对象的引用。
+答：Python 中的传参既不是传值也不是传地址，传的是对象的引用。
 
 82. Python 中的元类 (metaclass) 使用举例
 
@@ -1196,6 +1222,7 @@ class Foo(metaclass=Singleton)：
 foo1 = Foo()
 foo2 = Foo()
 print(foo1 is foo2)
+
 83. 简述 any() 和 all() 方法
 
 答： any(x)：判断 x 对象是否为空对象，如果都为空、0、false，则返回 false，如果不都为空、0、false，则返回 true。 all(x)：如果 all(x) 参数 x 对象的所有元素不为 0、''、False 或者 x 为空对象，则返回 True，否则返回 False。
@@ -1206,11 +1233,12 @@ print(foo1 is foo2)
 
 a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 print(list(filter(lambda x： x % 2 == 1, a)))
+
 其实现在不推荐使用 filter,map 等方法了，一般列表生成式就可以搞定了。
 
 85. 什么是猴子补丁？
 
-答： 猴子补丁（monkey patching)：在运行时动态修改模块、类或函数，通常是添加功能或修正缺陷。猴子补丁在代码运行时内存中）发挥作用，不会修改源码，因此只对当前运行的程序实例有效。因为猴子补丁破坏了封装，而且容易导致程序与补丁代码的实现细节紧密耦合，所以被视为临时的变通方案，不是集成代码的推荐方式。大概是下面这样的一个效果
+答： 猴子补丁（monkey patching)：在运行时动态修改模块、类或函数，通常是添加功能或修正缺陷。猴子补丁在代码运行时内存中）发挥作用，不会修改源码，因此只对当前运行的程序实例有效。因为猴子补丁破坏了封装，而且容易导致程序与补丁代码的实现细节紧密耦合，所以被视为临时的变通方案，不是集成代码的推荐方式。大概是下面这样的一个效果。
 
 def post()：
    print("this is post")
@@ -1221,13 +1249,13 @@ class Http()：
    def get(self)：
        print("this is get")
 
-
 def main()：
    Http.get=post #动态的修改了 get 原因的功能，
 
 if __name__ == '__main__'：
    main()
    Http.get()
+ 
 86. 在 Python 中是如何管理内存的？
 
 答： 垃圾回收：Python 不像 C++，Java 等语言一样，他们可以不用事先声明变量类型而直接对变量进行赋值。对 Python 语言来讲，对象的类型和内存都是在运行时确定的。这也是为什么我们称 Python 语言为动态类型的原因（这里我们把动态类型可以简单的归结为对变量内存地址的分配是在运行时自动判断变量类型并对变量进行赋值）。
