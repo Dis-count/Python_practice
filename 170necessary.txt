@@ -1255,7 +1255,7 @@ def main()：
 if __name__ == '__main__'：
    main()
    Http.get()
- 
+
 86. 在 Python 中是如何管理内存的？
 
 答： 垃圾回收：Python 不像 C++，Java 等语言一样，他们可以不用事先声明变量类型而直接对变量进行赋值。对 Python 语言来讲，对象的类型和内存都是在运行时确定的。这也是为什么我们称 Python 语言为动态类型的原因（这里我们把动态类型可以简单的归结为对变量内存地址的分配是在运行时自动判断变量类型并对变量进行赋值）。
@@ -1286,7 +1286,8 @@ if __name__ == '__main__'：
 
 正则表达式
 
-88. （1）使用正则表达式匹配出<html><h1\>www.baidu.com</h1></html>中的地址（2）a="张明 98 分"，用 re.sub，将 98 替换为 100
+88. （1）使用正则表达式匹配出<html><h1\>www.baidu.com</h1></html>中的地址
+    （2）a="张明 98 分"，用 re.sub，将 98 替换为 100
 
 答： 第一问答案
 
@@ -1295,11 +1296,13 @@ import re
 source = "<html><h1>www.baidu.com</h1></html>"
 pat = re.compile("<html><h1>(.*?)</h1></html>")
 print(pat.findall(source)[0])
+
 第二问答案
 
 import re
 s = "张明 98 分"
 print(re.sub(r"\d+","100",s))
+
 89. 正则表达式匹配中(.*)和(.*?)匹配区别？
 
 答：(.*) 为贪婪模式极可能多的匹配内容 ,(.*?) 为非贪婪模式又叫懒惰模式，一般匹配到结果就好，匹配字符的少为主，示例代码如下
@@ -1317,6 +1320,7 @@ print(pat2.findall(s))
 
 ['文本 1', '文本 2']
 ['文本 1</div><div>文本 2']
+
 90. 写一段匹配邮箱的正则表达式
 
 答：关于邮箱的匹配这个还真的是一个永恒的话题。
@@ -1352,6 +1356,7 @@ print(b)
 
 def foo()：
 pass
+
 92. 简述你对 input()函数的理解
 
 答：在 Python3 中 input 函数可以接收用户输入的字符串。
@@ -1375,6 +1380,7 @@ Python 中，一个变量的作用域总是由在代码中被赋值的地方所�
 当 Python 遇到一个变量的话它会按照这的顺序进行搜索
 
 本地作用域(Local)--->当前作用域被嵌入的本地作用域(Enclosing locals)--->全局/模块作用域(Global)--->内置作用域(Built-in)
+
 95. 三元运算写法和应用场景？
 
 答：Python 中的三元运算又称三目运算，是对简单的条件语句的简写。 是一种比较 Pythonic 的学法，形式为：val = 1 if 条件成立 else 2 代码示例如下：
@@ -1390,6 +1396,7 @@ else：
 # 改为三元运算符后
 val = a if a > b else b
 print(val)  # 5
+
 96. 了解 enumerate 么？
 
 答：enumerate 可以在迭代一个对象的时候，同时获取当前对象的索引和值。 代码示例如下
@@ -1400,6 +1407,7 @@ s = ascii_lowercase
 
 for index, value in enumerate(s)：
    print(index, value)
+
 97. 列举 5 个 Python 中的标准模块
 
 答： pathlib：路径操作模块，比 os 模块拼接方便。 urllib：网络请求模块，包括对 url 的结构解析。 asyncio： Python 的异步库，基于事件循环的协程模块。 re：正则表达式模块。 itertools：提供了操作生成器的一些模块。
@@ -1416,6 +1424,7 @@ def foo()：
 foo()
 print(n)
 x = 0
+
 之前我在视频教程中对这块做了个讲解，具体点击下方链接 https：//www.bilibili.com/video/av50865713
 
 99. pathlib 的用法举例
