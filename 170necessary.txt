@@ -1341,10 +1341,12 @@ r"^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 @[a-zA-Z0-9-]+.：前面的不用说了，后面的.表示.转义了,也是必备符号。
 [ a-zA-Z0-9-.]+：$符表示以什么结束,这里表示以英文字和数字或 -. 1 个或多个结尾。
 来个例子验证一波：
+
 import re
-plt=re.compile(r"^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
-b=plt.findall('adas+fefe.we@qq.com.cn')
+plt = re.compile(r"^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
+b = plt.findall('adas+fefe.we@qq.com.cn')
 print(b)
+
 网上找了个验证邮件地址的通用正则表达式（符合 RFC 5322 标准）
 
 (?：[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?：\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?：[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?：(?：[a-z0-9](?：[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?：[a-z0-9-]*[a-z0-9])?|\[(?：(?：25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?：25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]：(?：[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])
@@ -1371,6 +1373,7 @@ pass
 
 1.介于数字-5 和 256 之间的整数
 2.字符串仅包含字母、数字或下划线
+
 94. Python 中的作用域
 
 答：
@@ -1410,7 +1413,12 @@ for index, value in enumerate(s)：
 
 97. 列举 5 个 Python 中的标准模块
 
-答： pathlib：路径操作模块，比 os 模块拼接方便。 urllib：网络请求模块，包括对 url 的结构解析。 asyncio： Python 的异步库，基于事件循环的协程模块。 re：正则表达式模块。 itertools：提供了操作生成器的一些模块。
+答：
+pathlib：路径操作模块，比 os 模块拼接方便。
+urllib：网络请求模块，包括对 url 的结构解析。
+asyncio： Python 的异步库，基于事件循环的协程模块。
+re：正则表达式模块。
+itertools：提供了操作生成器的一些模块。
 
 98. 如何在函数中设置一个全局变量
 
@@ -1425,7 +1433,8 @@ foo()
 print(n)
 x = 0
 
-之前我在视频教程中对这块做了个讲解，具体点击下方链接 https：//www.bilibili.com/video/av50865713
+之前我在视频教程中对这块做了个讲解，具体点击下方链接
+https：//www.bilibili.com/video/av50865713
 
 99. pathlib 的用法举例
 
@@ -1439,12 +1448,14 @@ try：
    1 / 0
 except ZeroDivisionError as e：
    print(e.args)
+
 101. Python 中递归的最大次数，那如何突破呢？
 
 答：Python 有递归次数限制，默认最大次数为 1000。通过下面的代码可以突破这个限制
 
 import sys
 sys.setrecursionlimit(1500) # set the maximum depth as 1500
+
 另外需要注意的是 sys.setrecursionlimit() 只是修改解释器在解释时允许的最大递归次数，此外，限制最大递归次数的还和操作系统有关。
 
 102. 什么是面向对象的 mro
@@ -1456,6 +1467,7 @@ sys.setrecursionlimit(1500) # set the maximum depth as 1500
 答：isinstance 是判断一个对象是否为另一个对象的子类的，例如我们知道在 Python3 中 bool 类型其实是 int 的子类，所以我们可以对其检测。
 
 print(isinstance(True,int))
+
 104. 什么是断言？应用场景？
 
 答：在 Python 中是断言语句 assert 实现此功能，一般在表达式为 True 的情况下，程序才能通过。
@@ -1476,12 +1488,14 @@ def foo(a)：
 
 if __name__ == '__main__'：
    foo(1)
+
 105. lambda 表达式格式以及应用场景？
 
 答：lambda 表达式其实就是一个匿名函数,在函数编程中经常作为参数使用。 例子如下
 
 a = [('a',1),('b',2),('c',3),('d',4)]
 a_1 = list(map(lambda x：x[0],a))
+
 106. 新式类和旧式类的区别
 
 答：Python 2.x 中默认都是经典类，只有显式继承了 object 才是新式类，Python 3.x 中默认都是新式类，经典类被移除，不必显式的继承 object。 新式类都从 object 继承，经典类不需要。 新式类的 MRO(method resolution order 基类搜索顺序)算法采用 C3 算法广度优先搜索，而旧式类的 MRO 算法是采用深度优先搜索。 新式类相同父类只执行一次构造函数，经典类重复执行多次。
@@ -1495,6 +1509,7 @@ a_1 = list(map(lambda x：x[0],a))
 答： 增加_init_.py 文件，并在文件中增加：
 
 __all__ = ['demo1','demo3']
+
 109. 列举 5 个 Python 中的异常类型以及其含义
 
 答：
@@ -1508,6 +1523,7 @@ StopIteration 迭代器没有更多的值
 TypeError 对类型无效的操作
 
 IndentationError 缩进错误
+
 110. copy 和 deepcopy 的区别是什么？
 
 答： copy.copy()浅拷贝，只拷贝父对象，不会拷贝对象的内部的子对象。 copy.deepcopy()深拷贝，拷贝对象及其子对象。
@@ -1545,6 +1561,7 @@ if __name__ == '__main__'：
    #print(p.__age)
    #Python 自动将__age 解释成 _Person__age,于是我们用 _Person__age 访问，这次成功。
    print(p._Person__age)
+
 113. w、a+、wb 文件写入模式的区别
 
 答： w 表示写模式支持写入字符串，如果文件存在则覆盖。 a+ 和 w 的功能类型不过如果文件存在的话内容不会覆盖而是追加。 wb 是写入二进制字节类型的数据。
@@ -1565,6 +1582,7 @@ list 的 sort 方法返回的是对已经存在的列表进行操作，而内建
 
 import pprint
 pprint.pprint("this is pprint")
+
 117. 解释一下 Python 中的赋值运算符
 
 答：通过下面的代码列举出所有的赋值运算符
@@ -1584,6 +1602,7 @@ a//=3
 print(a)
 a%=4
 print(a)
+
 118. 解释一下 Python 中的逻辑运算符
 
 答：Python 中有三个逻辑运算符：and、or、not
@@ -1591,6 +1610,7 @@ print(a)
 print(False and True) #False
 print(7<7 or True) #True
 print(not 2==2) #False
+
 119. 讲讲 Python 中的位运算符
 
 答：按位运算符是把数字看作二进制来进行计算的。Python 中的按位运算法则如下：
@@ -1612,19 +1632,24 @@ enter image description here
 
 二进制数字由 0 和 1 组成，我们使用 0b 或 0B 前缀表示二进制数
 print(int(0b1010))#10
+
 使用 bin()函数将一个数字转换为它的二进制形式
 print(bin(0xf))#0b1111
+
 八进制数由数字 0-7 组成，用前缀 0o 或 0O 表示 8 进制数
 print(oct(8))#0o10
+
 十六进数由数字 0-15 组成，用前缀 0x 或者 0X 表示 16 进制数
 print(hex(16))#0x10
 print(hex(15))#0xf
+
 121. 怎样声明多个变量并赋值？
 
 答：Python 是支持多个变量赋值的，代码示例如下
 
 #对变量 a,b,c 声明并赋值
 a,b,c = 1,2,3
+
 算法和数据结构
 
 122. 已知：
@@ -1657,6 +1682,7 @@ def binary_search(arr, target)：
 if __name__ == '__main__'：
     l = [1,3,4,5,6,7,8]
     binary_search(l,8)
+
 124. Python 单例模式的实现方法
 
 答：实现单例模式的方法有多种，之前再说元类的时候用 call 方法实现了一个单例模式，另外 Python 的模块就是一个天然的单例模式，这里我们使用 new 关键字来实现一个单例模式。
@@ -1684,6 +1710,7 @@ if __name__ == '__main__'：
    print(id(b2))
    print(b.title)
    print(b2.title)
+
 125. 使用 Python 实现一个斐波那契数列
 
 答： 斐波那契数列：数列从第 3 项开始，每一项都等于前两项之和。
@@ -1704,6 +1731,7 @@ def fibonacci(num)：
 
 if __name__ == '__main__'：
    print(fibonacci(10))
+
 126. 找出列表中的重复数字
 
 答：
@@ -1737,6 +1765,7 @@ if __name__ == '__main__':
    s = Solution()
    d = s.duplicate([1, 2, -3, 4, 4, 95, 95, 5, 2, 2, -3, 7, 7, 5])
    print(d)
+
 127. 找出列表中的单个数字
 
 答：
@@ -1753,6 +1782,7 @@ def find_single(l ：list)：
 if __name__ == '__main__'：
    l = [1,2,3,4,5,6,2,3,4,5,6]
    find_single(l)
+
 128. 写一个冒泡排序
 
 答：
@@ -1879,7 +1909,6 @@ from timeit import Timer
 
 s = "++++++----+++----"
 
-
 # 方法一
 def func1()：
    new_s = s.replace("+", "0").replace("-", "1")
@@ -1926,6 +1955,7 @@ if __name__ == '__main__'：
 # func2 1.593012875
 # func3 3.3487415590000005
 # func1 的方式最优，其次是 func2
+
 133. 单链表反转
 
 答：
