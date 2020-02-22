@@ -1702,7 +1702,6 @@ class Book：
        super().__init__()
        self.title = title
 
-
 if __name__ == '__main__'：
    b = Book('The Spider Book')
    b2 = Book('The Flask Book')
@@ -1802,15 +1801,14 @@ if __name__ == '__main__'：
    l = [1, 2, 3, 4, 5, 55, 6, 3, 4, 5, 6]
    bubble_sort(l)
    print(l)
+
 129. 写一个快速排序
 
 答：
 
 """
-快速排序
+快速排序   从后找小  从前找大
 """
-
-
 def quick_sort(arr, first, last)：
    if first >= last：
        return
@@ -1836,6 +1834,7 @@ if __name__ == '__main__'：
    l = [1, 2, 3, 4, 5, 55, 6, 3, 4, 5, 6]
    quick_sort(l, 0, len(l) - 1)
    print(l)
+
 130. 写一个拓扑排序
 
 答：
@@ -1857,7 +1856,7 @@ def topological_sort(graph： Mapping)：
            in_degrees[v] += 1  # 对获取到的下级节点的入度加 1
    # 循环结束之后的结果： {'a'： 0, 'b'： 1, 'c'： 1, 'd'： 2, 'e'： 1, 'f'： 4}
    Q = [u for u in graph if in_degrees[u] == 0]  # 入度为 0 的节点
-   in_degrees_zero = []
+   in_degrees_zero  = []
    while Q：
        u = Q.pop()  # 默认从最后一个移除
        in_degrees_zero.append(u)  # 存储入度为 0 的节点
@@ -1881,6 +1880,7 @@ if __name__ == '__main__'：
 
    t = topological_sort(graph_dict)
    print(t)
+
 131. Python 实现一个二进制计算
 
 答：
@@ -1896,6 +1896,7 @@ if __name__ == '__main__'：
    num1 = input("输入第一个数，二进制格式：\n")
    num2 = input("输入第二个数，二进制格式：\n")
    print(binary_add(num1, num2))
+
 132. 有一组“+”和“-”符号，要求将“+”排到左边，“-”排到右边，写出具体的实现方法。
 
 答：
@@ -1940,7 +1941,6 @@ def func3()：
        else：
            start_index += 1
    return "".join(data)
-
 
 if __name__ == '__main__'：
    timer1 = Timer("func1()", "from __main__ import func1")
@@ -2050,6 +2050,7 @@ if __name__ == '__main__'：
    print("对链表进行逆向操作之后")
    single_link.reverse()
    single_link.traversal()
+
 134. 交叉链表求交点
 
 答：
@@ -2059,7 +2060,6 @@ class ListNode：
    def __init__(self, x)：
        self.val = x
        self.next = None
-
 
 class Solution：
    def getIntersectionNode(self, headA, headB)：
@@ -2075,6 +2075,7 @@ class Solution：
                cur2 = cur2.next if cur2 is not None else headB
 
            return cur1
+
 cur1、cur2，2 个指针的初始位置是链表 headA、headB 头结点，cur1、cur2 两个指针一直往后遍历。 直到 cur1 指针走到链表的末尾，然后 cur1 指向 headB； 直到 cur2 指针走到链表的末尾，然后 cur2 指向 headA； 然后再继续遍历； 每次 cur1、cur2 指向 None，则将 cur1、cur2 分别指向 headB、headA。 循环的次数越多，cur1、cur2 的距离越接近，直到 cur1 等于 cur2。则是两个链表的相交点。
 
 135. 用队列实现栈
@@ -2198,6 +2199,7 @@ if __name__ == '__main__'：
    print(obj.pop())
    print(obj.pop())
    print(obj.empty())
+
 136. 找出数据流的中位数
 
 答：对于一个升序排序的数组，中位数为左半部分的最大值，右半部分的最小值，而左右两部分可以是无需的，只要保证左半部分的数均小于右半部分即可。因此，左右两半部分分别可用最大堆、最小堆实现。
@@ -2254,6 +2256,7 @@ if __name__ == '__main__'：
    s.Insert(3)
    s.Insert(4)
    print(s.GetMedian())
+
 137. 二叉搜索树中第 K 小的元素
 
 答： ??二叉搜索树(Binary Search Tree)，又名二叉排序树(Binary Sort Tree)。 ? 二叉搜索树是具有有以下性质的二叉树：?
@@ -2293,6 +2296,7 @@ class Solution：
                node.left = None
                node.right = None
            self.dfs(node.right, k)
+
 爬虫相关
 
 138. 在 requests 模块中，requests.content 和 requests.text 什么区别
@@ -2304,37 +2308,44 @@ class Solution：
 答：
 
 from lxml import html
-source='''
+source =''
 <div class="nam"><span>中国</span></div>
-root=html.fromstring(source)
-_content=root.xpath("string(//div[@class='nam'])")
+root = html.fromstring(source)
+_content = root.xpath("string(//div[@class='nam'])")
+
 if _content and isinstance(_content,list)：
    content=_content[0]
 elif isinstance(_content,str)：
    content=_content
 print(content)
+
 140. 说一说 scrapy 的工作流程
+
 答：
 首先还是先看张图
 enter image description here
-已 www.baidu.com 为例： 首先需要知道的事各个模块之间调用都是通过引擎进行的。
+以 www.baidu.com 为例： 首先需要知道的是各个模块之间调用都是通过引擎进行的。
 spider 把百度需要下载的第一个 url：www.baidu.com 交给引擎。
 引擎把 url 交给调度器排序入队处理。
 调度器把处理好的 request 返回给引擎。
 通过引擎调动下载器，按照下载中间件的设置下载这个 request。
 下载器下载完毕结果返回给引擎（如果失败：不好意思，这个 request 下载失败，然后引擎告诉调度器，这个 request 下载失败了，你记录一下，我们待会儿再下载。）
-引擎调度 spider，把按照 Spider 中间件处理过了的请求，交给 spider 处理。
+引擎调度 spider，把按照 spider 中间件处理过了的请求，交给 spider 处理。
 spider 把处理好的 url 和 item 传给引擎。
 引擎根据不同的类型调度不同的模块，调度 Item Pipeline 处理 item。
 把 url 交给调度器。 然后从第 4 步开始循环，直到获取到你需要的信息，
 注意！只有当调度器中不存在任何 request 了，整个程序才会停止。
+
 141. scrapy 的去重原理
+
 答：scrapy 本身自带一个去重中间件，scrapy 源码中可以找到一个 dupefilters.py 去重器。里面有个方法叫做 request_seen，它在 scheduler(发起请求的第一时间)的时候被调用。它代码里面调用了 request_fingerprint 方法（就是给 request 生成一个指纹）。
 就是给每一个传递过来的 url 生成一个固定长度的唯一的哈希值。但是这种量级千万到亿的级别内存是可以应付的。
+
 142. scrapy 中间件有几种类，你用过哪些中间件
 答： scrapy 的中间件理论上有三种(Schduler Middleware,Spider Middleware,Downloader Middleware)。在应用上一般有以下两种
 爬虫中间件 Spider Middleware：主要功能是在爬虫运行过程中进行一些处理。
 下载器中间件 Downloader Middleware：这个中间件可以实现修改 User-Agent 等 headers 信息，处理重定向，设置代理，失败重试，设置 cookies 等功能。
+
 143. 你写爬虫的时候都遇到过什么？反爬虫措施，你是怎么解决的？
 答：
 Headers： 从用户的 headers 进行反爬是最常见的反爬虫策略。Headers 是一种区分浏览器行为和机器行为中最简单的方法，还有一些网站会对 Referer （上级链接）进行检测（机器行为不太可能通过链接跳转实现）从而实现爬虫。 相应的解决措施：通过审查元素或者开发者工具获取相应的 headers 然后把相应的 headers 传输给 Python 的 requests，这样就能很好地绕过。
@@ -2349,34 +2360,47 @@ Ajax 动态加载的工作原理是：从网页的 url 加载网页的源代码�
 处理方法：找对应的 ajax 接口，一般数据返回类型为 json。
 cookie 限制 一次打开网页会生成一个随机 cookie，如果再次打开网页这个 cookie 不存在，那么再次设置，第三次打开仍然不存在，这就非常有可能是爬虫在工作了。
 解决措施：在 headers 挂上相应的 cookie 或者根据其方法进行构造（例如从中选取几个字母进行构造）。如果过于复杂，可以考虑使用 selenium 模块（可以完全模拟浏览器行为）。
+
 144. 为什么会用到代理？
-答：如果使用同一个 ip 去不断的访问的网站的话,会很容易被封 ip，严重的永久封禁，导致当前的访问不了该网站。不只是通过程序，通过浏览器也无法访问。
+答：如果使用同一个 ip 去不断的访问网站的话,会很容易被封 ip，严重的永久封禁，导致当前的访问不了该网站。不只是通过程序，通过浏览器也无法访问。
+
 145. 代理失效了怎么处理？
 答：一般通过大家代理池来实现代理切换等操作，来实现时时使用新的代理 ip，来避免代理失效的问题。
+
 146. 列出你知道 header 的内容以及信息
 答： User-Agent：User-Agent 的内容包含发出请求的用户信息。 Accept：指定客户端能够接收的内容类型。 Accept-Encoding：指定浏览器可以支持的 web 服务器返回内容压缩编码类型。 Accept-Language：浏览器可接受的语言。 Connection：表示是否需要持久连接。（HTTP 1.1 默认进行持久连接）。 Content-Length：请求的内容长度。 If-Modified-Since：如果请求的部分在指定时间之后被修改则请求成功，未被修改则返回 304 代码。 Referer：先前网页的地址，当前请求网页紧随其后，即来路。
+
 147. 说一说打开浏览器访问 www.baidu.com 获取到结果，整个流程。
-答： 浏览器向 DNS 服务器发送 baidu.com 域名解析请求。 DNS 服务器返回解析后的 ip 给客户端浏览器，浏览器想该 ip 发送页面请求。 DNS 服务器接收到请求后，查询该页面，并将页面发送给客户端浏览器。 客户端浏览器接收到页面后，解析页面中的引用，并再次向服务器发送引用资源请求。 服务器接收到资源请求后，查找并返回资源给客户端。 客户端浏览器接收到资源后，渲染，输出页面展现给用户。
+答： 浏览器向 DNS 服务器发送 baidu.com 域名解析请求。 DNS 服务器返回解析后的 ip 给客户端浏览器，浏览器向该 ip 发送页面请求。 DNS 服务器接收到请求后，查询该页面，并将页面发送给客户端浏览器。 客户端浏览器接收到页面后，解析页面中的引用，并再次向服务器发送引用资源请求。 服务器接收到资源请求后，查找并返回资源给客户端。 客户端浏览器接收到资源后，渲染，输出页面展现给用户。
+
 148. 爬取速度过快出现了验证码怎么处理
 答：一般在爬取过程中出现了验证码根据不同的情况，处理不一样。 如果在一开始访问就有验证码,那么就想办法绕开验证码,比如通过 wap 端或者 app 去发现其他接口等，如果不行就得破解验证码了，复杂验证码就需要接入第三方打码平台了。 如果开始的时候没有验证码，爬了一段时间才出现验证码，这个情况就要考虑更换代理 ip 了。 可能因为同一个访问频率高导致的。
+
 149. scrapy 和 scrapy-redis 有什么区别？为什么选择 redis 数据库？
 答： scrapy 是一个 Python 爬虫框架，爬取效率极高，具有高度定制性，但是不支持分布式。而 scrapy-redis 一套基于 redis 数据库、运行在 scrapy 框架之上的组件，可以让 scrapy 支持分布式策略，Slaver 端共享 Master 端 redis 数据库里的 item 队列、请求队列和请求指纹集合。
 为什么选择 redis 数据库，因为 redis 支持主从同步，而且数据都是缓存在内存中的，所以基于 redis 的分布式爬虫，对请求和数据的高频读取效率非常高。
+
 150. 分布式爬虫主要解决什么问题
 答：使用分布式主要目的就是为了给爬虫加速。解决了单个 ip 的限制，宽带的影响，以及 CPU 的使用情况和 io 等一系列操作
+
 151. 写爬虫是用多进程好？还是多线程好？ 为什么？
 答： 多线程，因为爬虫是对网络操作属于 io 密集型操作适合使用多线程或者协程。
+
 152. 解析网页的解析器使用最多的是哪几个
 答：lxml，pyquery
+
 153. 需要登录的网页，如何解决同时限制 ip，cookie,session（其中有一些是动态生成的）在不使用动态爬取的情况下？
 答： 解决限制 IP 可以搭建代理 IP 地址池、adsl 拨号使用等。
 不适用动态爬取的情况下可以使用反编译 JS 文件获取相应的文件，或者换用其他平台（比如手机端）看看是否可以获取相应的 json 文件，一般要学会习惯性的先找需要爬取网站的 h5 端页面，看看有没有提供接口，进而简化操作。
+
 154. 验证码的解决?
 答： 图形验证码：干扰、杂色不是特别多的图片可以使用开源库 Tesseract 进行识别，太过复杂的需要借助第三方打码平台。 点击和拖动滑块验证码可以借助 selenium、无图形界面浏览器（chromedirver 或者 phantomjs）和 pillow 包来模拟人的点击和滑动操作，pillow 可以根据色差识别需要滑动的位置。
+
 155. 使用最多的数据库（mysql，mongodb，redis 等），对他的理解？
 答： MySQL 数据库：开源免费的关系型数据库，需要实现创建数据库、数据表和表的字段，表与表之间可以进行关联（一对多、多对多），是持久化存储。
 mongodb 数据库：是非关系型数据库，数据库的三元素是，数据库、集合、文档，可以进行持久化存储，也可作为内存数据库，存储数据不需要事先设定格式，数据以键值对的形式存储。
 redis 数据库：非关系型数据库，使用前可以不用设置格式，以键值对的方式保存，文件格式相对自由，主要用与缓存数据库，也可以进行持久化存储。
+
 网络编程
 156. TCP 和 UDP 的区别？
 答： UDP 是面向无连接的通讯协议，UDP 数据包括目的端口号和源端口号信息。
@@ -2385,10 +2409,12 @@ redis 数据库：非关系型数据库，使用前可以不用设置格式，�
 TCP 是面向连接的通讯协议，通过三次握手建立连接，通讯完成时四次挥手。
 优点：TCP 在数据传递时，有确认、窗口、重传、阻塞等控制机制，能保证数据正确性，较为可靠。
 缺点：TCP 相对于 UDP 速度慢一点，要求系统资源较多。
+
 157. 简要介绍三次握手和四次挥手
 答： 三次握手 第一次握手：主机 A 发送同步报文段（SYN）请求建立连接。 第二次握手：主机 B 听到连接请求，就将该连接放入内核等待队列当中，并向主机 A 发送针对 SYN 的确认 ACK，同时主机 B 也发送自己的请求建立连接（SYN）。 第三次握手：主机 A 针对主机 BSYN 的确认应答 ACK。
 四次挥手 第一次挥手：当主机 A 发送数据完毕后，发送 FIN 结束报文段。 第二次挥手：主机 B 收到 FIN 报文段后，向主机 A 发送一个确认序号 ACK（为了防止在这段时间内，对方重传 FIN 报文段）。 第三次挥手：主机 B 准备关闭连接，向主机 A 发送一个 FIN 结束报文段。 第四次挥手：主机 A 收到 FIN 结束报文段后，进入 TIME_WAIT 状态。并向主机 B 发送一个 ACK 表示连接彻底释放。
 除此之外经常看的问题还有，为什么 2、3 次挥手不能合在一次挥手中？ 那是因为此时 A 虽然不再发送数据了，但是还可以接收数据，B 可能还有数据要发送给 A，所以两次挥手不能合并为一次。
+
 158. 什么是粘包？ socket 中造成粘包的原因是什么？ 哪些情况会发生粘包现象？
 答：TCP 是流式协议，只有字节流，流是没有边界的，根部就不存在粘包一说，一般粘包都是业务上没处理好造成的。
 但是在描述这个现象的时候，可能还得说粘包。TCP 粘包通俗来讲，就是发送方发送的多个数据包，到接收方后粘连在一起，导致数据包不能完整的体现发送的数据。
@@ -2399,7 +2425,9 @@ TCP 是面向连接的通讯协议，通过三次握手建立连接，通讯完�
 发送定长包。如果每个消息的大小都是一样的，那么在接收对等方只要累计接收数据，直到数据等于一个定长的数值就将它作为一个消息。
 包尾加上\r\n 标记。FTP 协议正是这么做的。但问题在于如果数据正文中也含有\r\n，则会误判为消息的边界。
 包头加上包体长度。包头是定长的 4 个字节，说明了包体的长度。接收对等方先接收包体长度，依据包体长度来接收包体。
+
 并发
+
 159. 举例说明 concurrent.future 的中线程池的用法
 答：
 from concurrent.futures import ThreadPoolExecutor
@@ -2411,6 +2439,7 @@ def load_url(url)：
 with ThreadPoolExecutor(max_workers=3) as pool：
        pool.map(load_url,URLS)
 print('主线程结束')
+
 160. 说一说多线程，多进程和协程的区别。
 答： 概念：
 进程：
@@ -2441,11 +2470,13 @@ print('主线程结束')
 1) 一个线程可以多个协程，一个进程也可以单独拥有多个协程，这样 Python 中则能使用多核 CPU。
 2) 线程进程都是同步机制，而协程则是异步
 3) 协程能保留上一次调用时的状态，每次过程重入时，就相当于进入上一次调用的状态
+
 161. 简述 GIL
 答： GIL：全局解释器锁。每个线程在执行的过程都需要先获取 GIL，保证同一时刻只有一个线程可以执行代码。
 线程释放 GIL 锁的情况：在 IO 操作等可能会引起阻塞的 systemcall 之前,可以暂时释放 GIL，但在执行完毕后, 必须重新获取 GIL，Python3.x 使用计时器（执行时间达到阈值后，当前线程释放 GIL）或 Python2.x，tickets 计数达到 100 。
 Python 使用多进程是可以利用多核的 CPU 资源的。
 多线程爬取比单线程性能有提升，因为遇到 IO 阻塞会自动释放 GIL 锁。
+
 162. 进程之间如何通信
 答： 可以通过队列的形式，示例如下
 from multiprocessing import Queue, Process
@@ -2490,20 +2521,24 @@ if __name__ == '__main__'：
    # 使用 join  等待读数据结束
    read_data.join()
    print('所有的数据都写入并读取完成。。。')
+
 163. IO 多路复用的作用？
 答： 阻塞 I/O 只能阻塞一个 I/O 操作，而 I/O 复用模型能够阻塞多个 I/O 操作，所以才叫做多路复用。
 I/O 多路复用是用于提升效率，单个进程可以同时监听多个网络连接 IO。 在 IO 密集型的系统中， 相对于线程切换的开销问题，IO 多路复用可以极大的提升系统效率。
+
 164. select、poll、epoll 模型的区别？
 答： select，poll，epoll 都是 IO 多路复用的机制。I/O 多路复用就通过一种机制，可以监视多个描述符，一旦某个描述符就绪（一般是读就绪或者写就绪），能够通知程序进行相应的读写操作。
 select 模型： select 目前几乎在所有的平台上支持，其良好跨平台支持也是它的一个优点。select 的一 个缺点在于单个进程能够监视的文件描述符的数量存在最大限制，在 Linux 上一般为 1024，可以通过修改宏定义甚至重新编译内核的方式提升这一限制，但 是这样也会造成效率的降低。
 poll 模型： poll 和 select 的实现非常类似，本质上的区别就是存放 fd 集合的数据结构不一样。select 在一个进程内可以维持最多 1024 个连接，poll 在此基础上做了加强，可以维持任意数量的连接。
 但 select 和 poll 方式有一个很大的问题就是，我们不难看出来 select 是通过轮训的方式来查找是否可读或者可写，打个比方，如果同时有 100 万个连接都没有断开，而只有一个客户端发送了数据，所以这里它还是需要循环这么多次，造成资源浪费。所以后来出现了 epoll 系统调用。
 epoll 模型： epoll 是 select 和 poll 的增强版，epoll 同 poll 一样，文件描述符数量无限制。但是也并不是所有情况下 epoll 都比 select/poll 好，比如在如下场景：在大多数客户端都很活跃的情况下，系统会把所有的回调函数都唤醒，所以会导致负载较高。既然要处理这么多的连接，那倒不如 select 遍历简单有效。
+
 165. 什么是并发和并行？
 答：“并行是指同一时刻同时做多件事情，而并发是指同一时间间隔内做多件事情”。
 并发与并行是两个既相似而又不相同的概念：并发性，又称共行性，是指能处理多个同时性活动的能力；并行是指同时发生的两个并发事件，具有并发的含义，而并发则不一定并行，也亦是说并发事件之间不一定要同一时刻发生。
 并发的实质是一个物理 CPU(也可以多个物理 CPU) 在若干道程序之间多路复用，并发性是对有限物理资源强制行使多用户共享以提高效率。 并行性指两个或两个以上事件或活动在同一时刻发生。在多道程序环境下，并行性使多个程序同一时刻可在不同 CPU 上同时执行。
 并行，是每个 CPU 运行一个程序。
+
 166. 一个线程 1 让线程 2 去调用一个函数怎么实现
 答：
 import threading
@@ -2516,9 +2551,11 @@ if __name__ == '__main__'：
    t2 = threading.Thread(target=func2)
    t1 = threading.Thread(target=func1, args=(t2,))
    t1.start()
+
 167. 解释什么是异步非阻塞？
 答： 异步 异步与同步相对，当一个异步过程调用发出后，调用者在没有得到结果之前，就可以继续执行后续操作。当这个调用完成后，一般通过状态、通知和回调来通知调用者。对于异步调用，调用的返回并不受调用者控制。
 非阻塞 非阻塞是这样定义的，当线程遇到 I/O 操作时，不会以阻塞的方式等待 I/O 操作的完成或数据的返回，而只是将 I/O 请求发送给操作系统，继续执行下一条语句。当操作系统完成 I/O 操作时，以事件的形式通知执行 I/O 操作的线程，线程会在特定时候处理这个事件。简答理解就是如果程序不会卡住，可以继续执行，就是说非阻塞的。
+
 168. threading.local 的作用？
 答： threading.local()这个方法是用来保存一个全局变量，但是这个全局变量只有在当前线程才能访问，如果你在开发多线程应用的时候，需要每个线程保存一个单独的数据供当前线程操作，可以考虑使用这个方法，简单有效。代码示例
 import threading
@@ -2532,8 +2569,19 @@ def worker()：
    print(threading.current_thread(),a.x)
 for i in range(20)：
    threading.Thread(target=worker).start()
+
 Git 面试题
 169. 说说你知道的 git 命令
-答： git init：该命令将创建一个名为 .git 的子目录,这个子目录含有你初始化的 Git 仓库中所有的必须文件,这些文件是 Git 仓库的骨干 git clone url：将服务器代码下载到本地 git pull：将服务器的代码拉到本地进行同步，如果本地有修改会产生冲突。 git push：提交本地修改的代码到服务器 git checkout -b branch：创建并切换分支 git status：查看修改状态 git add 文件名：提交到暂存区 git commit -m "提交内容"：输入提交的注释内容 git log：查看提交的日志情况
+答：
+git init：该命令将创建一个名为 .git 的子目录,这个子目录含有你初始化的 Git 仓库中所有的必须文件,这些文件是 Git 仓库的骨干
+git clone url：将服务器代码下载到本地
+git pull：将服务器的代码拉到本地进行同步，如果本地有修改会产生冲突。
+git push：提交本地修改的代码到服务器
+git checkout -b branch：创建并切换分支
+git status：查看修改状态
+git add 文件名：提交到暂存区
+git commit -m "提交内容"：输入提交的注释内容
+git log：查看提交的日志情况
+
 170. git 如何查看某次提交修改的内容
 答：我们首先可以 git log 显示历史的提交列表 之后我们用 git show 便可以显示某次提交的修改内容 同样 git show filename 可以显示某次提交的某个内容的修改信息。

@@ -1,18 +1,18 @@
-# -*- coding: UTF-8 -*- 
+# -*- coding: UTF-8 -*-
 # This program is used to generate a GUI which contains your files.
 import os
 from time import sleep
 from tkinter import *
- 
+
 class DirList(object):
   def __init__(self, initdir=None):
     '''构造函数，说明版本信息'''
     self.top = Tk()
-    self.label = Label(self.top, 
+    self.label = Label(self.top,
       text = 'My directory Lister v1.1')
     self.label.pack()
     self.cwd = StringVar(self.top)
-    self.dir1 = Label(self.top, 
+    self.dir1 = Label(self.top,
       fg='blue', font=('Helvetica', 22, 'bold'))
     self.dir1.pack()
     self.dirfm = Frame(self.top)
@@ -33,7 +33,7 @@ class DirList(object):
       command = self.clrDir,
       activeforeground = 'white',
       activebackground = 'blue')
-    self.ls = Button(self.bfm, 
+    self.ls = Button(self.bfm,
       text = 'List Directory',
       command = self.doLS,
       activeforeground = 'white',
@@ -63,7 +63,7 @@ class DirList(object):
     error = ''
     tdir = self.cwd.get()
     if not tdir: tdir = os.curdir
- 
+
     if not os.path.exists(tdir):
       error = tdir + ': no such file'
     elif not os.path.isdir(tdir):
@@ -98,5 +98,6 @@ class DirList(object):
 def main():
   d = DirList(os.curdir)
   mainloop()
+
 if __name__ == '__main__':
   main()
