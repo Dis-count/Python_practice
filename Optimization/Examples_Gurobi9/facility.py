@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python3.7
 
-# Copyright 2018, Gurobi Optimization, LLC
+# Copyright 2020, Gurobi Optimization, LLC
 
 # Facility location: a company currently ships its product from 5 plants
 # to 4 warehouses. It is considering closing some plants to reduce
@@ -14,7 +14,9 @@
 #   http://www.solver.com/disfacility.htm
 # Used with permission.
 
-from gurobipy import *
+import gurobipy as gp
+from gurobipy import GRB
+
 
 # Warehouse demand in thousands of units
 demand = [15, 18, 14, 20]
@@ -36,7 +38,7 @@ plants = range(len(capacity))
 warehouses = range(len(demand))
 
 # Model
-m = Model("facility")
+m = gp.Model("facility")
 
 # Plant open decision variables: open[p] == 1 if plant p is open.
 open = m.addVars(plants,
@@ -52,18 +54,18 @@ transport = m.addVars(warehouses, plants, obj=transCosts, name="trans")
 # these decision variables instead.  The following would be equivalent
 # to the preceding two statements...
 #
-#open = []
-#for p in plants:
-#  open.append(m.addVar(vtype=GRB.BINARY,
-#                       obj=fixedCosts[p],
-#                       name="open[%d]" % p))
+# open = []
+# for p in plants:
+#     open.append(m.addVar(vtype=GRB.BINARY,
+#                          obj=fixedCosts[p],
+#                          name="open[%d]" % p))
 #
-#transport = []
-#for w in warehouses:
-#  transport.append([])
-#  for p in plants:
-#    transport[w].append(m.addVar(obj=transCosts[w][p],
-#                                 name="trans[%d,%d]" % (w, p)))
+# transport = []
+# for w in warehouses:
+#     transport.append([])
+#     for p in plants:
+#         transport[w].append(m.addVar(obj=transCosts[w][p],
+#                                      name="trans[%d,%d]" % (w, p)))
 
 # The objective is to minimize the total fixed and variable costs
 m.modelSense = GRB.MINIMIZE
@@ -72,14 +74,13 @@ m.modelSense = GRB.MINIMIZE
 # Note that the right-hand limit sets the production to zero if the plant
 # is closed
 m.addConstrs(
-    (transport.sum('*',p) <= capacity[p]*open[p] for p in plants),
-    "Capacity")
+    (transport.sum('*', p) <= capacity[p]*open[p] for p in plants), "Capacity")
 
 # Using Python looping constructs, the preceding would be...
 #
-#for p in plants:
-#  m.addConstr(sum(transport[w][p] for w in warehouses) <= capacity[p] * open[p],
-#              "Capacity[%d]" % p)
+# for p in plants:
+#     m.addConstr(sum(transport[w][p] for w in warehouses)
+#                 <= capacity[p] * open[p], "Capacity[%d]" % p)
 
 # Demand constraints
 m.addConstrs(
@@ -87,8 +88,9 @@ m.addConstrs(
     "Demand")
 
 # ... and the preceding would be ...
-#for w in warehouses:
-#  m.addConstr(sum(transport[w][p] for p in plants) == demand[w], "Demand[%d]" % w)
+# for w in warehouses:
+#     m.addConstr(sum(transport[w][p] for p in plants) == demand[w],
+#                 "Demand[%d]" % w)
 
 # Save model
 m.write('facilityPY.lp')
@@ -96,7 +98,7 @@ m.write('facilityPY.lp')
 # Guess at the starting point: close the plant with the highest fixed costs;
 # open all others
 
-# First, open all plants
+# First open all plants
 for p in plants:
     open[p].start = 1.0
 
@@ -123,8 +125,8 @@ for p in plants:
     if open[p].x > 0.99:
         print('Plant %s open' % p)
         for w in warehouses:
-            if transport[w,p].x > 0:
-                print('  Transport %g units to warehouse %s' % \
-                      (transport[w,p].x, w))
+            if transport[w, p].x > 0:
+                print('  Transport %g units to warehouse %s' %
+                      (transport[w, p].x, w))
     else:
         print('Plant %s closed!' % p)
