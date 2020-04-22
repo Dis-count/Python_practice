@@ -1,0 +1,14 @@
+numpy
+scipy
+matplotlib
+nltk
+keras
+scikit-learn
+pypinyin
+tensorflow
+torch
+click
+xlearn
+wave
+pyaudio
+py2neo
