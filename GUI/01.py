@@ -16,6 +16,8 @@ class Application(Frame):
         self.quitButton.pack()
 
 app = Application()
+
+app.master.geometry('500x300')
 # 设置窗口标题:
 app.master.title('Hello World')
 # 主消息循环:
