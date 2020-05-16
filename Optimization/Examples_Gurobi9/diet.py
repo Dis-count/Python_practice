@@ -29,7 +29,6 @@ foods, cost = gp.multidict({
     'salad':     2.49,
     'milk':      0.89,
     'ice cream': 1.59})
-
 # Nutrition values for the foods
 nutritionValues = {
     ('hamburger', 'calories'): 410,

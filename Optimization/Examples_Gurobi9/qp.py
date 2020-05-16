@@ -27,7 +27,7 @@ z = m.addVar(ub=1.0, name="z")
 obj = x*x + x*y + y*y + y*z + z*z + 2*x
 m.setObjective(obj)
 
-# Add constraint: x + 2 y + 3 z <= 4
+# Add constraint: x + 2 y + 3 z >= 4
 m.addConstr(x + 2 * y + 3 * z >= 4, "c0")
 
 # Add constraint: x + y >= 1
