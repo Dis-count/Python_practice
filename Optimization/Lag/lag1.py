@@ -239,3 +239,6 @@ while d > 0.001:
 else:
 
 print('The optimal adjustment is: %g' % (np.sum(AA)-np.sum(A)))
+
+
+# 查找不可行的约束是哪个
