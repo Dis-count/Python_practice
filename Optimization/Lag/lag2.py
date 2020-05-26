@@ -5,16 +5,15 @@ from gurobipy import GRB
 
 # 逆优化给约束矩阵 A,C,b
 class INV(object):
-	def __init__(self, A, b, C):
-		self.A, self.b, self.C = A, b, C
-
-		print('INV MODEL RUNING...')
-
+    def __init__(self, A, b, C, x0):
+	    self.A, self.b, self.C, self.x0= A, b, C, x0
+	    print('INV MODEL RUNING...')
     # 用于计算原问题
     def primal(self):
+
         try:
             m = gp.Model("primal")
-            xx = np.array(slef.A)
+            xx = np.array(self.A)
             row = xx.shape[0]
             col = xx.shape[1]
 
@@ -30,13 +29,13 @@ class INV(object):
 
             m.addConstr(A @ x <= rhs, name="p")
             m.write('primal.lp')
-
+            m.params.outputflag = 0
             # Optimize model
             m.optimize()
 
             print('The primal-object: %g' % m.objVal)
-
-            return x.X
+            self.result = x.X
+            return self.result
 
         except gp.GurobiError as e:
                 print('Primal-Error code ' + str(e.errno) + ": " + str(e))
@@ -44,32 +43,137 @@ class INV(object):
         except AttributeError:
             print('Primal-Encountered an attribute error')
 
+    def main(A,C,b,x0,lambda0): #
 
-	def dea(self):
-		columns_Page = ['效益分析'] * 3 + ['规模报酬分析'] * 2 + ['差额变数分析'] * (self.m1 + self.m2) + ['投入冗余率'] * self.m1 + ['产出不足率'] * self.m2
-		columns_Group = ['技术效益(BCC)', '规模效益(CCR/BCC)', '综合技术效益(CCR)','有效性', '类型'] + (self.m1_name + self.m2_name) * 2
-		self.Result = pd.DataFrame(index=self.DMUs, columns=[columns_Page, columns_Group])
-		self.__CCR()
-		return self.Result
+        try:
 
-	def analysis(self, path=None, name=None):
-		Result = self.dea()
-		file_path = os.path.join(os.path.expanduser("~"), 'Desktop') if path == None else r'../table'
-		file_name = '\\DEA 数据包络分析报告.xlsx' if name == None else f'\\{name}.xlsx'
-		Result.to_excel(file_path + file_name, 'DEA 数据包络分析报告')
+            m = gp.Model("main")
 
+            xx = np.array(self.A)
+            row1 = xx.shape[0]
+            col1 = xx.shape[1]
+
+            x = m.addMVar((row1,col1), lb=self.A, name="x")
+
+            # Set objective
+            m.setObjective(x.sum(), GRB.MINIMIZE)
+        # Add constraints
+            x0 = np.array(x0)
+
+            lambda0 = np.array(lambda0)
+
+            for i in range(row1):
+
+                m.addConstr(x0 @ x[i, :] <= b[i], name="row"+str(i))
+
+            # At most one queen per column
+            for i in range(col1):
+
+                m.addConstr(lambda0 @ x[:, i] >= C[i], name="col"+str(i))
+            # np.dot(lambda0,)
+
+            for i in range(row1):
+
+                m.addConstr(x0*lambda0[i] @ x[i,:] == lambda0[i]*b[i], name="equal"+str(i))
+
+            m.write('main1.lp')
+
+            # Optimize model
+            m.optimize()
+
+            print('The min-adjustment: %g' % (m.objVal-np.sum(xx)))
+
+            return x.X
+
+        except gp.GurobiError as e:
+            print('Main-Error code ' + str(e.errno) + ": " + str(e))
+
+        except AttributeError:
+            print('Main-Encountered an attribute error')
+
+    def adjust(self):
+
+        AA = np.array(self.A)
+        CC = np.array(self.C)
+        ratio = np.dot(CC,self.x0)/self.b
+        adjust = [sum(abs(AA[i,:]*ratio[i]-CC)) for i in range(len(AA[:,0]))]
+        min_ad = min(adjust)
+        self.ind = adjust.index(min_ad)
+        print('The min adjustment is:%g and the index is %g' % (min_ad,self.ind+1))
+        return None
+
+    def bi(self):
+    #  minimize    |A'-A|
+    #  subject to  A\lambda == C (bilinear equality)
+    #              A * x0 <= b
+    #              \lambda(Ax0-b) == 0  (bilinear equality)
+    #              x, y, z non-negative (x integral in second version)
+
+        m = gp.Model("opt_adjust")
+        A = np.array(self.A)
+        mm = A.shape[0]
+        n = A.shape[1]
+        x = m.addVars(mm,n,lb= A,name="x") # m X n
+        y = m.addVars(mm, lb=0, name="y") # dual m
+        m.update()
+        m.addConstrs((gp.quicksum(x[i,j]*y[i] for i in range(mm)) == self.C[j]) for j in range(n))
+
+        m.addConstrs((gp.quicksum(x[i,j]*self.x0[j]*y[i] for j in range(n)) == y[i]*self.b[i]) for i in range(mm))
+
+        m.setObjective(gp.quicksum(x[i,j] for i in range(mm) for j in range(n)), GRB.MINIMIZE)
+        m.write('bi.lp')
+    # First optimize() call will fail - need to set NonConvex to 2
+        try:
+            m.params.NonConvex = 2
+            m.optimize()
+        except gp.GurobiError:
+            print("Optimize failed")
+        return None
+
+# a = np.random.randint(50,size= (4,5))
+
+def rand(m,n):
+    A = np.random.randint(20, size= (m,n))
+    b = np.random.randint(5,30, size = m)
+    C = np.random.randint(10, size = n)
+    model = gp.Model('random')
+    x = model.addMVar(shape=n, lb=0, name='x')
+    AA = sp.csr_matrix(A)
+    obj = np.array(C)
+    model.setObjective(obj @ x, GRB.MAXIMIZE)
+    rhs = b
+    model.addConstr(AA @ x <= rhs, name='ran')
+    # model.addConstrs(gp.quicksum(A[i,j]* x[j] for j in range(n)) <= rhs[i] for i in range(m))
+
+    model.write('ran.lp')
+    model.optimize()
+    #model.remove(model.getConstrs()[:])
+
+    if model.status == GRB.Status.INFEASIBLE:
+        print('Optimization was stopped with status %d' % model.status)
+        # do IIS, find infeasible constraints
+        model.computeIIS()
+        for c in model.getConstrs():
+            if c.IISConstr:
+                print('%s' % c.constrName)
+                model.remove(c)
+        model.update()
+        return model
+    else:
+        return model
+
+# Con = model.getConstrs()[:]
+# print(Con[0].index)
 
 if __name__ == '__main__':
-	data = pd.DataFrame({1990: [14.40, 0.65, 31.30, 3621.00, 0.00], 1991: [16.90, 0.72, 32.20, 3943.00, 0.09],
-		                 1992: [15.53, 0.72, 31.87, 4086.67, 0.07], 1993: [15.40, 0.76, 32.23, 4904.67, 0.13],
-		                 1994: [14.17, 0.76, 32.40, 6311.67, 0.37], 1995: [13.33, 0.69, 30.77, 8173.33, 0.59],
-		                 1996: [12.83, 0.61, 29.23, 10236.00, 0.51], 1997: [13.00, 0.63, 28.20, 12094.33, 0.44],
-		                 1998: [13.40, 0.75, 28.80, 13603.33, 0.58], 1999: [14.00, 0.84, 29.10, 14841.00, 1.00]},
-	                    index=['政府财政收入占 GDP 的比例/%', '环保投资占 GDP 的比例/%', '每千人科技人员数/人', '人均 GDP/元', '城市环境质量指数']).T
+    A = [[-1,1],[6,4],[1,4]]
+    C = [5,4]
+    b = [1,24,9]
+    x0 = [3,1]
+    model = rand(3,2)
+    A = model.getConstrs()
 
-	X = data[['政府财政收入占 GDP 的比例/%', '环保投资占 GDP 的比例/%', '每千人科技人员数/人']]
-	Y = data[['人均 GDP/元', '城市环境质量指数']]
-
-	dea = DEA(DMUs_Name=data.index, X=X, Y=Y)
-	dea.analysis()
-	print(dea.dea())
+    xx = INV(A, b, C, x0)
+    xx.adjust()
+    xx.bi()
+    print(xx.primal())
