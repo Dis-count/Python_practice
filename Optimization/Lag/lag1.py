@@ -203,6 +203,7 @@ n = len(C)
 b = [1,24,9]
 # b = [1,24]
 x0 =[1,2]
+
 opt_value = np.dot(C,x0)
 lam,m = sub(A,C,b)
 
