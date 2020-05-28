@@ -12,3 +12,6 @@ constrs = m.getConstrs()
 var_index = {v: i for i, v in enumerate(dvars)}
 
 constr_index= {c: i for i, c in enumerate(constrs)}
+
+# get the value of the vars.
+solution = m.getAttr('X', vars)
