@@ -216,6 +216,7 @@ def primal(A,C,b):
 
 if __name__ == '__main__':
 
+for i in range(10)
     model,x0 = rand(3,2)
     # model.optimize()
     A = get_matrix(model)
