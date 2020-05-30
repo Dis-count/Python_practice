@@ -2,6 +2,7 @@ import numpy as np
 import scipy.sparse as sp
 import gurobipy as gp
 from gurobipy import GRB
+from pandas import DataFrame
 
 # 逆优化给约束矩阵 A,C,b
 class INV(object):
@@ -17,7 +18,7 @@ class INV(object):
         adjust = [sum(abs(AA[i,:]*ratio[i]-CC)) for i in range(len(AA[:,0]))]
         min_ad = min(adjust)
         self.ind = adjust.index(min_ad)
-        print('The min adjustment is:%g and the index is %g' % (min_ad,self.ind+1))
+        # print('The min adjustment is:%g and the index is %g' % (min_ad,self.ind+1))
         return min_ad
 
     def bi(self):
@@ -65,8 +66,7 @@ def rand(m,n):
     AA = sp.csr_matrix(A)
     obj = np.array(C)
     model.setObjective(obj @ x, GRB.MAXIMIZE)
-    rhs = b
-    model.addConstr(AA @ x <= rhs, name='ran')
+    model.addConstr(AA @ x <= b, name='ran')
     # model.addConstrs(gp.quicksum(A[i,j]* x[j] for j in range(n)) <= rhs[i] for i in range(m))
 
     model.write('ran.lp')
@@ -187,7 +187,7 @@ def primal(A,C,b):
         row = xx.shape[0]
         col = xx.shape[1]
 
-        x = m.addMVar(shape=col, lb=0, name="x")
+        x = m.addMVar(shape=col, lb=-GRB.INFINITY, name="x")
         A = sp.csr_matrix(A)
         # Set objective
 
@@ -213,24 +213,31 @@ def primal(A,C,b):
     except AttributeError:
         print('Sub-Encountered an attribute error')
 
-
 if __name__ == '__main__':
 
-for i in range(10)
-    model,x0 = rand(3,2)
-    # model.optimize()
-    A = get_matrix(model)
-    print(A)
-    b = model.RHS
-    C = model.getAttr('Obj', model.getVars())
-    lamb = sub(A,C,b)
-    x1 = primal(A,C,b)
-    print(x0)
-    print(x1)
-    res3 =rmain(A,C,b,x0,lamb)
-    xx = INV(A, b, C, x0)
-    res1 = xx.adjust()
-    res2 = xx.bi()
-    print(res1)
-    print(res2)
-    print(res3)
+    res = np.zeros((10,3))
+
+    for i in range(10):
+        model,x0 = rand(0,2)
+        # model.optimize()
+        A = get_matrix(model)
+        # print(A)
+        b = model.RHS
+        C = model.getAttr('Obj', model.getVars())
+        lamb = sub(A,C,b)
+        x1 = primal(A,C,b)
+        # print(x0)
+        print(lamb)
+        res3 = rmain(A,C,b,x0,lamb)
+        xx = INV(A, b, C, x0)
+        res1 = xx.adjust()
+        res2 = xx.bi()
+        res[i,:] = [res1,res2,res3]
+        print(i)
+
+    df = DataFrame(res)
+    df.to_excel('res.xlsx')
+
+# 存入一个 100*3的矩阵 ，每一行是一个结果
+# 将矩阵转为data frame
+# 再将df写入 excel中

@@ -22,7 +22,7 @@ print("F:/Python_Easy/n4/test.py ")
 # F:/Python_Easy/n4/test.py
 
 # 而 r"" 的出现就是为了避免这种情况，如下：
-# print(r"F:\Python_Easy\n4\test.py ")
+print(r"F:\Python_Easy\n4\test.py ")
 # F:\Python_Easy\n4\test.py
 
 #3. b" "的作用是：后面字符串是bytes 类型
