@@ -62,7 +62,7 @@ def rand(m,n):
     b = np.random.randint(5,30, size = m+4)
     C = np.random.randint(10, size = n)
     model = gp.Model('random')
-    x = model.addMVar(shape=n, lb=0, name='x')
+    x = model.addMVar(shape=n, lb=-GRB.INFINITY, name='x')
     AA = sp.csr_matrix(A)
     obj = np.array(C)
     model.setObjective(obj @ x, GRB.MAXIMIZE)
@@ -215,11 +215,12 @@ def primal(A,C,b):
 
 if __name__ == '__main__':
 
-    res = np.zeros((10,3))
+    res = np.zeros((100,3))
 
-    for i in range(10):
+    for i in range(100):
         model,x0 = rand(0,2)
         # model.optimize()
+        x0[1] = x0[1]-1
         A = get_matrix(model)
         # print(A)
         b = model.RHS
@@ -236,7 +237,7 @@ if __name__ == '__main__':
         print(i)
 
     df = DataFrame(res)
-    df.to_excel('res.xlsx')
+    df.to_excel('res1.xlsx')
 
 # 存入一个 100*3的矩阵 ，每一行是一个结果
 # 将矩阵转为data frame

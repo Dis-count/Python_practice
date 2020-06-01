@@ -1,9 +1,9 @@
 \ Model sub
 \ LP format - for model browsing. Use MPS format to capture full model detail.
 Minimize
-  29 x[0] + 19 x[1] + 7 x[2] + 21 x[3]
+  27 x[0] + 24 x[1] + 16 x[2] + 21 x[3]
 Subject To
- c[0]: - 16 x[0] + 8 x[1] - 12 x[2] + 11 x[3] = 3
- c[1]: 11 x[0] - 20 x[1] - 10 x[2] + 13 x[3] = 3
+ c[0]: - 11 x[0] + 17 x[1] - 11 x[2] + 6 x[3] = 9
+ c[1]: 3 x[0] - 4 x[1] - 5 x[2] + 8 x[3] = 9
 Bounds
 End
