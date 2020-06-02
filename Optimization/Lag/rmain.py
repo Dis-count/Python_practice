@@ -88,7 +88,7 @@ def rmain(A,C,b,x0,lambda0): #
 A = [[-1,1],[6,4],[1,4]]
 C = [5,4]
 b = [1,24,9]
-x0 =[1,2]
+x0 =[2,3]
 
 def sub(A,C,b):
 
@@ -130,7 +130,7 @@ lambda0,m = sub(A,C,b)
 rmain(A,C,b,x0,lambda0)
 
 
-def bi(self):
+def bi(A,b,C,x0):
 #  minimize    |A'-A|
 #  subject to  A\lambda == C (bilinear equality)
 #              A * x0 <= b
@@ -138,7 +138,7 @@ def bi(self):
 #              x, y, z non-negative (x integral in second version)
 
     m = gp.Model("opt_adjust")
-    A = np.array(self.A)
+    A = np.array(A)
     mm = A.shape[0]
     n = A.shape[1]
     x1 = m.addVars(mm,n,lb= 0,name="e") # m X n
@@ -146,17 +146,19 @@ def bi(self):
 
     y = m.addVars(mm, lb=0, name="y") # dual m
     m.update()
-    m.addConstrs((gp.quicksum(x[i,j]*y[i] for i in range(mm)) == self.C[j]) for j in range(n))
+    m.addConstrs((gp.quicksum((x1[i,j]-x2[i,j]+A[i,j])*y[i] for i in range(mm)) == C[j]) for j in range(n))
 
-    m.addConstrs((gp.quicksum(x[i,j]*self.x0[j]*y[i] for j in range(n)) == y[i]*self.b[i]) for i in range(mm))
+    m.addConstrs((gp.quicksum((x1[i,j]-x2[i,j]+A[i,j])*x0[j]*y[i] for j in range(n)) == y[i]*b[i]) for i in range(mm))
 
-    m.setObjective(gp.quicksum(x[i,j] for i in range(mm) for j in range(n)), GRB.MINIMIZE)
+    m.setObjective(gp.quicksum((x1[i,j]+x2[i,j]) for i in range(mm) for j in range(n)), GRB.MINIMIZE)
     m.write('bi.lp')
     m.params.outputflag = 0
 # First optimize() call will fail - need to set NonConvex to 2
     try:
         m.params.NonConvex = 2
         m.optimize()
-        return (m.objVal-np.sum(A))
+        return m.objVal
     except gp.GurobiError:
         print("Optimize failed")
+
+bi(A,b,C,x0)
