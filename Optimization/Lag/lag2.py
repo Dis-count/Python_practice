@@ -138,7 +138,7 @@ def sub(A,C,b):
     except AttributeError:
         print('Sub-Encountered an attribute error')
 
-def rmain(A,C,b,x0,lambda0): #
+def rmain(A,C,b,x0,lambda0):
 
     try:
 
@@ -148,29 +148,30 @@ def rmain(A,C,b,x0,lambda0): #
         row1 = xx.shape[0]
         col1 = xx.shape[1]
 
-        x = m.addMVar((row1,col1), lb=A, name="x")
+        x = m.addMVar((row1,col1), lb=0, name="e")
+        y = m.addMVar((row1,col1), lb=0, name="f")
 
         # Set objective
-        m.setObjective(x.sum(), GRB.MINIMIZE)
-    # Add constraints
+        m.setObjective(x.sum()+ y.sum(), GRB.MINIMIZE)
+        # Add constraints
         x0 = np.array(x0)
 
         lambda0 = np.array(lambda0)
 
         for i in range(row1):
 
-            m.addConstr(x0 @ x[i, :] <= b[i], name="row"+str(i))
+            m.addConstr(x0 @ x[i, :]- x0 @ y[i, :] <= (b[i] - x0 @ xx[i,:]), name="row"+str(i))
 
         for i in range(row1):
 
-            m.addConstr(x0*lambda0[i] @ x[i,:] == lambda0[i]*b[i], name="equal"+str(i))
+            m.addConstr(x0*lambda0[i] @ x[i,:]- x0*lambda0[i] @ y[i,:] == (lambda0[i]*b[i] - lambda0[i]* x0 @ xx[i,:]) , name="equal"+str(i))
 
-        m.write('Rmain1.lp')
+        m.write('Rmain0.lp')
 
         m.params.outputflag = 0
         m.optimize()
 
-        return (m.objVal-np.sum(xx))
+        return m.objVal
 
     except gp.GurobiError as e:
         print('Main-Error code ' + str(e.errno) + ": " + str(e))
@@ -218,9 +219,8 @@ if __name__ == '__main__':
     res = np.zeros((100,3))
 
     for i in range(100):
-        model,x0 = rand(0,2)
+        model,x0 = rand(4,2)
         # model.optimize()
-        x0[1] = x0[1]-1
         A = get_matrix(model)
         # print(A)
         b = model.RHS
@@ -237,7 +237,7 @@ if __name__ == '__main__':
         print(i)
 
     df = DataFrame(res)
-    df.to_excel('res1.xlsx')
+    df.to_excel('res.xlsx')
 
 # 存入一个 100*3的矩阵 ，每一行是一个结果
 # 将矩阵转为data frame

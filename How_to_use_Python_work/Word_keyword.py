@@ -4,7 +4,7 @@ import os
 def get_document(filepath):
     z = zipfile.ZipFile(filepath, "r")
     text = z.read("word/document.xml").decode("UTF-8")
-    text = re.sub(r"<.*?>", "", text)#去除xml里的所有标记符
+    text = re.sub(r"<.*?>", "", text) #去除xml里的所有标记符
     ###如果多份简历在同一个word文件里###
     table_list = text.split("XX简历")[1:]#依据简历标题切分每一份简历信息
     return table_list
