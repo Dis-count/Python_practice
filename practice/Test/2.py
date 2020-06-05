@@ -41,4 +41,4 @@ for x in range(a_min,a_max+1):
 f=set(d)
 g=set(e)
 h=len(f-g)
-print h
+print(h)
