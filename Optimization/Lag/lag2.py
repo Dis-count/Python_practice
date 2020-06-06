@@ -23,7 +23,7 @@ class INV(object):
 
     def bi(self):
 #  minimize    |A'-A|
-#  subject to  A\lambda == C (bilinear equality)
+#  subject to  A^T\lambda == C (bilinear equality)
 #              A * x0 <= b
 #              \lambda(Ax0-b) == 0  (bilinear equality)
 #              x, y, z non-negative (x integral in second version)
@@ -291,9 +291,50 @@ if __name__ == '__main__':
 # 再将df写入 excel中
 # test
 
-[[ -7.  19.]
- [  7.  -3.]
- [-16. -20.]
- [ 17.   5.]] [5.0, 13.0, 22.0, 18.0] [7.0, 2.0]
+A = [[ -7 , 19],
+    [  7 , -3],
+    [-16, -20],
+    [ 17,   5]]
+b = [5.0, 13.0, 22.0, 18.0]
+C = [7.0, 2.0]
 0.3186692506459945
 0.8075632315625724
+
+x1 = primal(A,C,b)
+print(x1)
+x1*C
+0.95*x1
+(13+0.95*x1[1]*3)/(0.95*x1[0])
+(18-0.95*x1[1]*5)/(0.95*x1[0])
+
+lamb = sub(A,C,b)
+res3 = rmain(A,C,b,0.95*x1,lamb)
+print(res3)
+
+
+m =Model()
+v0 = m.addVar()
+v1 = m.addVar()
+m.update()
+m.addConstr(v0 - v1 <= 4) # Constraint 1
+m.addConstr(v0 + v1 <= 4) # Constraint 2
+m.addConstr(-0.25*v0 + v1 <= 1) # Constraint 3
+m.setObjective(v1, GRB.MAXIMIZE) # Objective: maximize v1
+m.params.outputflag = 0
+m.optimize()
+
+import matplotlib.pyplot as plt
+import numpy as np
+x = np.linspace(-3,3,10)
+y1 = (7*x+5)/19
+y2 = (7*x-13)/3
+y3 = (-16*x-22)/20
+y4 = (-17*x+18)/5
+plt.title('Feasible Region.')
+plt.plot(x,y1,color='red',linewidth=1,label='y1',linestyle='--',marker='*')
+plt.plot(x,y2,color='blue',linewidth=1,label='y2',linestyle='-.',marker='o')
+plt.plot(x,y3,color='green',linewidth=1,label='y3',linestyle='dotted')
+plt.plot(x,y4,color='orange',linewidth=1,label='y4')
+plt.plot(0.95*x1[0],0.95*x1[1],'ro')
+plt.legend()
+plt.show()
