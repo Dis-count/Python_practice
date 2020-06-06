@@ -3,18 +3,21 @@
 # 5 6 7 8 那么抹除掉的整数可能是4也可能是9
 # 思路：对串排序。然后用最大值减最小值，如果差为n，则涂抹的是中间数字；如果差为n-1，则涂抹两边数字；其他，mistake。先判断是否有重复数字。注意最小值为1的情况。
 
-def get_the_lose_one(data):
-    data_ordered = sorted(data,key = lambda x,y:x-y)
 
-    outcome= []
-    for index,data in enumerate(data_ordered):
-        if index == len(data_ordered)-2:
-            break
-            if data+1 != data_ordered[index+1]:
-            outcome.append(data+1)
-            if len(outcome) >= 1:
-                print('mistake')
-            elif not len(outcome):
-                print([data_ordered[0]-1,data_ordered[len(data_ordered)-1]+1])
-            else:
-                print(outcome[0])
+if __name__ =='__main__':
+    n = int(input('Please input the number of remainer.'))  # 剩下多少数
+    s =[int(i) for i in input('Please input the list of the number.').split()]
+    mini, maxi = min(s), max(s)
+
+    if maxi -mini == n-1:
+        if mini >1:
+            print(mini-1,maxi+1)
+        else:
+            print(maxi+1)
+    elif maxi -mini == n:
+        for i in range(mini,maxi):
+            if i not in s:
+                print(i)
+
+    else:
+        print('mistake')

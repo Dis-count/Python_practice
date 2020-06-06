@@ -8,7 +8,7 @@ from pandas import DataFrame
 class INV(object):
     def __init__(self, A, b, C, x0):
 	    self.A, self.b, self.C, self.x0= A, b, C, x0
-	    print('INV MODEL RUNING...')
+	    # print('INV MODEL RUNING...')
 
     def adjust(self):
 
@@ -130,7 +130,7 @@ def sub(A,C,b):
         m.params.outputflag = 0
         m.optimize()
 
-        print('The sub-object: %g' % m.objVal)
+        # print('The sub-object: %g' % m.objVal)
 
         return x.X
 
@@ -261,7 +261,7 @@ if __name__ == '__main__':
     res = np.zeros((100,4))
 
     for i in range(100):
-        model,x0 = rand(2,2)
+        model,x0 = rand(0,2)
         # model.optimize()
         x0 = 0.95*x0
         A = get_matrix(model)
@@ -271,19 +271,29 @@ if __name__ == '__main__':
         lamb = sub(A,C,b)
         x1 = primal(A,C,b)
         # print(x0)
-        print(lamb)
-        res3 = rmain(A,C,b,x0,lamb)
-        res4 = rmainA(A,C,b,x0,lamb)
+        # print(lamb)
+#        res3 = rmain(A,C,b,x0,lamb)  # 用绝对值
+#        res4 = rmainA(A,C,b,x0,lamb) # 不用绝对值，直接增大
         xx = INV(A, b, C, x0)
-        res1 = xx.adjust()
-        res2 = xx.bi()
-        res[i,:] = [res1,res2,res3,res4]
-        print(i)
-
-    df = DataFrame(res)
-    df.to_excel('2res095.xlsx')
+        res1 = xx.adjust()  # 用一刀切
+        res2 = xx.bi()      # bilinear 使用增大
+#        res[i,:] = [res1,res2,res3,res4]
+        if res1 < res2:
+            print(A,b,C)
+            print(res1)
+            print(res2)
+        break
+#    df = DataFrame(res)
+#    df.to_excel('1res095.xlsx')
 
 # 存入一个 100*3的矩阵 ，每一行是一个结果
 # 将矩阵转为data frame
 # 再将df写入 excel中
 # test
+
+[[ -7.  19.]
+ [  7.  -3.]
+ [-16. -20.]
+ [ 17.   5.]] [5.0, 13.0, 22.0, 18.0] [7.0, 2.0]
+0.3186692506459945
+0.8075632315625724
