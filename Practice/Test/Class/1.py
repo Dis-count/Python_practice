@@ -72,3 +72,83 @@ hw1[v]
 
 b = (hw1 >= 6)
 hw1[b]
+
+# what is michael's hw1 score
+hw1['Michael']
+# select the last
+hw1.iloc[-1] # just value but without name # is just a element so is a list
+hw1.iloc[-1:] # why difference  # [-1:] is range means subset so is a series format.
+hw1.iloc[-2:-1]
+hw1.iloc[[-1,-3]]
+
+# Compute the average hw1 grade among those students whose grade is less than or equal to 6
+hw1[hw1<=6].mean()
+
+# Select those students whose scores is less than 5 or greater than 9
+# watch out the priority
+
+hw1[(hw1<5) | (hw1>9)]
+
+# find the max
+hw1[hw1 == hw1.max()]
+
+# more series methods
+# ranks  if two students are equal, then the rank will be 0.5
+hw1.rank()
+hw1.rank(ascending=False)
+
+hw1.rank(ascending=False, method = 'min')
+hw1.rank(ascending=False, method = 'dense')
+
+# idmax  and  idmin
+hw1.idxmax()
+hw1.idxmin()
+
+# sort values
+hw1.sort_values(ascending = False) # ascending by default
+
+hw1.sort_index()
+
+# nlargest and nsmallest
+hw1.nlargest(3)
+
+# head and tail
+hw1.tail(3)
+
+# explore the parameters of the methods
+hw1.rank(ascending = False,method ='min')
+
+# Who got the 4th highest grade
+hw1.nlargest(4).tail(1)
+# if there are two are equal
+hw1[hw1.rank(ascending = False,method ='min') == 5]
+
+hw1.nlargest(4).iloc[3:4]
+
+#  retrieve the row of the person who comes last in alphabetical order
+hw1.sort_index().tail(1)
+hw1.sort_index().iloc[-1:]
+
+# 'J' who got the highest grade
+
+hw1[(hw1.index >= 'J') & (hw1.index < 'K')].idxmax()
+
+import numpy as np
+
+hw1.astype(np.str)
+
+hw1 +2
+
+hw1.astype(np.str) + '2'
+
+hw2 = df['hw2']
+
+hw1 + hw2
+
+(hw1 + hw2)/2  # index consistent
+
+hw1 - hw1.mean() + 8
+
+((hw1 + hw2)/2 - 6.7).abs().idxmin()
+
+((hw1 + hw2)/2 - 6.7).abs().nsmallest(1)
