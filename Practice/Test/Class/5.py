@@ -96,3 +96,101 @@ df.Job.apply(lambda v: 0 if v.startswith('No') else .5 if 'part-time' in v else 
 df.loc[:,'Job3'] = df.Job.apply(lambda v: 0 if v.startswith('No') else .5 if 'part-time' in v else 1)
 
 # solution 4
+# Use the StringMethods str
+
+df.Job.unique()
+
+df['Job4'] =  df.Job.str.startswith('Yes') * 0.5 + df.Job.str.contains('full-time') * 0.5
+
+df.Job.str.match('.*part-time.*') * 0.5 + df.Job.str.match('.*full-time.*')*1.0
+
+df.columns
+
+df.drop(columns = ['Job','Job1','Job2','Job3'], inplace = True)
+
+df.rename(columns = {'Job4':'Job'})
+
+# Convert column Bachtime to dummies variables.
+
+dumDF = pd.get_dummies(df, columns = ['BachTime'])
+
+dumDF.columns
+
+cols = dumDF.columns.tolist()
+
+cols[-4:] = ['Batch_0to1','Batch_1to3','Batch_3to5','Batch_5Plus']
+
+dumDF.columns = cols
+
+# change yes to 1 and No to 0
+df = dumDF
+
+df.replace({'No': 0, 'Yes': 1}, inplace= True)
+
+# Adding simple columns
+df['Language'] = df.C + df.CPP + df.CS + df.Java + df.Python +df.JS + df.R + df.SQL + df.SAS
+
+cols = df.columns.tolist()
+
+cols.insert(0,cols.pop(-1))
+
+df = df.reindex(columns = cols)
+
+# Adding complex columns
+# Date \to academic quarter and year
+
+df.Timestamp.astype(np.datetime64).dt.year
+
+####################################
+df['Expert'] = (df.Language >= 3)* 1.0
+
+def expertFunction(row):
+    if row['Language'] >= 3:
+        return 1
+    else:
+        return 0
+
+df.apply(expertFunction, axis = 1)
+
+df.apply(lambda r: 1 if r['Language'] >= 3 else 0, axis=1)
+
+%timeit df.Language >=3
+%timeit df.apply(lambda r: 1 if r['Language'] >= 3 else 0, axis=1)
+%timeit df.apply(lambda r: r['Program'].lower(), axis=1)
+
+# solution2 series apply(fast because it uses vectorization)
+%timeit df.Program.apply(lambda v: v.lower())
+
+# solution3
+%timeit df.Program.str.lower()
+
+# write it to a file
+
+df.to_csv('cleaned_survey.csv')
+
+# Problems
+# how many students know SQL?
+df.SQL.sum()
+
+df[df.Program == 'MSIS'].ProgSkills.mean()
+df[df.Program == 'MBA']['ProgSkills'].mean()
+
+(df.Classification > df.Clustering).sum()
+(df.Classification < df.Clustering).sum()
+
+# Some analysis
+# Summary statistics
+df.Classification.describe()
+
+df.corr()
+
+# find the strongest correlations
+
+cor = df.corr()
+cor.stack()
+
+cor[cor < 1].stack().nlargest(20).iloc[::2]
+
+cor.stack().nsmallest(20).iloc[::2]
+
+cor.stack().abs().nsmallest(20)
