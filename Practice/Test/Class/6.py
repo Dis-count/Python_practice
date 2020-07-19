@@ -76,3 +76,24 @@ df.groupby(['ProgSkills','Program']).agg({'Job': 'size', 'Python': 'mean'}).rena
 df1 = df.copy()
 df1['PythonAndC'] = df1['Python'] * df1['C']
 df1.groupby('Program').agg({'PythonAndC': 'sum', 'Clustering': lambda x: x.max() -x.min()})
+
+
+# Advanced : retrieve unaggregated rows (apply)
+df[df.Languages == df.Languages.max()]
+
+df.groupby('Program').apply(lambda d: d[d.Languages == d.Languages.max()])
+
+# Notice that apply is a slow way
+%timeit df.groupby('Program')['ProgSkills'].mean()
+
+%timeit df.groupby('Program').apply(lambda d: d.ProgSkills.mean())
+
+# find the students with the highest Classification skills
+df.loc[df.Classification == df.Classification.max(), ['C','Java']]
+
+
+df2 = df.copy()
+
+(df2.Languages > df2.avg_languages) * 1
+
+# Make a 0-1 column that indicates whether a student knows clustering better than the average student in his/her quarter.
