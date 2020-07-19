@@ -88,12 +88,47 @@ df.groupby('Program').apply(lambda d: d[d.Languages == d.Languages.max()])
 
 %timeit df.groupby('Program').apply(lambda d: d.ProgSkills.mean())
 
-# find the students with the highest Classification skills
+# find the students with the highest Classification skills and show their C/Java
+# M1
 df.loc[df.Classification == df.Classification.max(), ['C','Java']]
 
+df[df.Classification == df.Classification.max()]
+
+# M2
+df.groupby('ProgSkills').apply(lambda d: d.loc[d.Classification ==  d.Classification.max(), ['C','Java']])
+
+# For each ProgSkills level, find the Program with most students that have that ProgSkills level
+df.groupby('Program').size().nlargest(1)
+
+df.groupby('ProgSkills').apply(lambda d: d.groupby('Program').size().nlargest(1))
+
+# For each ProgSkills level, find the student with the highest Classification skills and show their knowledge of C/java
+
+df.groupby('ProgSkills')['Classification'].agg('max')
 
 df2 = df.copy()
 
+df2['max_classif_within_progskills'] = \
+df2.groupby('ProgSkills')['Classification'].transform('max')
+
+df2[df2.Classification == df2.max_classif_within_progskills]
+
+# Create a 0-1 column whose value is 1 if the student knows more languages than the average student of his/her program.
+df.groupby('Program')['Languages'].mean()
+
+df2 = df.copy()
+df2['avg_languages'] = \
+df2.groupby('Program')['Languages'].transform('mean')
+
+df2.Languages > df2.avg_languages
+
 (df2.Languages > df2.avg_languages) * 1
 
-# Make a 0-1 column that indicates whether a student knows clustering better than the average student in his/her quarter.
+# Make a 0-1 column that indicates whether a student knows clustering better than the average student in his/her quarter(quarter,year).
+
+df2 = df.copy()
+
+df2['baseline_clustering'] = \
+df2.groupby(['quarter','year'])['Clustering'].transform('mean')
+
+(df2.Clustering > df2.baseline_clustering) * 1
