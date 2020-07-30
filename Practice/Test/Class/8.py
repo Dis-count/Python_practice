@@ -343,4 +343,4 @@ poly.get_feature_names()  # 添加项之后 再做scale
 ridge = Ridge().fit(X_train2_poly, y_train2)
 ridge.score(X_test2_poly, y_test2)
 
-from sklearn.linear_model import Lasso
+# from sklearn.linear_model import Lasso
