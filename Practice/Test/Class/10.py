@@ -101,3 +101,5 @@ from sklearn.model_selection import cross_validate
 scores = pd.DataFrame(cross_validate(grid, X, y, scoring = 'balanced_accuracy', cv= 5, n_jobs =-1,  return_train_score= True))
 
 scores[['train_score','test_score']].boxplot()
+
+# For 预测.csv   how to preprocessing.
