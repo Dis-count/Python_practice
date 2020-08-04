@@ -24,3 +24,7 @@ class Solution:
         self.dfs(root.left)
         self.res.append(root)
         self.dfs(root.right)
+
+a = Solution()
+
+a.KthNode(tree,1)

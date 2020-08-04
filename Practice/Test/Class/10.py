@@ -93,7 +93,6 @@ param_grid = {'columntransformer__pipeline-2__simpleimputer__strategy':['mean','
 
 from sklearn.model_selection import GridSearchCV
 
-
 grid = GridSearchCV(pipe, param_grid = param_grid, cv= 5, n_jobs = -1, return_train_score =True)
 
 from sklearn.model_selection import cross_validate
@@ -103,3 +102,48 @@ scores = pd.DataFrame(cross_validate(grid, X, y, scoring = 'balanced_accuracy', 
 scores[['train_score','test_score']].boxplot()
 
 # For 预测.csv   how to preprocessing.
+#  Exercise
+data2 = pd.read_csv('adult_openml.csv')
+
+data2.shape
+
+y2 = data2['class']
+
+X2 = data2.drop(columns = ['class', 'fnlwgt', 'capitalgain', 'capitalloss'])
+
+# encode the label
+from sklearn.preprocessing import LabelEncoder
+
+encoder = LabelEncoder()
+y2 = encoder.fit_transform(y2)
+
+y2
+
+data2.head()
+
+col_cat = ['workclass', 'education', 'material-status', 'occupation', 'relationship', 'race', 'native-country', 'sex']
+col_num = ['age', 'hoursperweek']
+
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import KBinsDiscretizer
+# onehot is similar to dummy.
+pipe_cat = OneHotEncoder(handle_unknown = 'ignore')
+pipe_num = KBinsDiscretizer()
+
+from sklearn.compose import make_column_transformer
+
+preprocessor = make_column_transformer((pipe_cat, col_cat), (pipe_num, col_num))
+
+pipe = make_pipeline(preprocessor, LogisticRegression())
+
+param_grid = {'logisticregression__C':[0.1,1,10]}
+
+from sklearn.model_selection import GridSearchCV
+
+grid = GridSearchCV(pipe, param_grid = param_grid, cv= 5, n_jobs = -1, return_train_score =True)
+
+from sklearn.model_selection import cross_validate
+
+scores = pd.DataFrame(cross_validate(grid, X2, y2, scoring = 'balanced_accuracy', cv= 3, n_jobs =-1,  return_train_score= True))
+
+scores[['train_score','test_score']].boxplot()
