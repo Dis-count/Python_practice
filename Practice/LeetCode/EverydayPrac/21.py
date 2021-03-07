@@ -34,4 +34,3 @@ class NumMatrix:
 
 # 时间复杂度：构造函数的时间复杂度是 O(M * N)； sumRegion 函数的时间复杂度是 O(1)
 # 空间复杂度：利用了preSum 矩阵，空间是 O(M * N)。
-https://leetcode-cn.com/problems/counting-bits/solution/bi-te-wei-ji-shu-by-leetcode-solution-0t1i/
