@@ -17,6 +17,7 @@ class Solution:
             ans[x // c][x % c] = nums[x // n][x % n]
 
         return ans
+        
 # 找到 元素 与其下标的对应关系 直接进行赋值
 
 # 复杂度分析
