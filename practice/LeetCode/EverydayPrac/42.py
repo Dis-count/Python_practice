@@ -23,3 +23,26 @@ class Solution:
 
 # 或者 动态规划
 # 定义好 每一天 持有和 未持有 两种状态即可  求解 最后一天未持有股票的状态就是最大值
+
+
+#  the difference between object and no-object
+
+class Person:
+    """
+    不带object
+    """
+    name = "zhengtong"
+
+
+class Animal(object):
+    """
+    带有object
+    """
+    name = "chonghong"
+
+if __name__ == "__main__":
+    x = Person()
+    print("Person", dir(x))
+
+    y = Animal()
+    print("Animal", dir(y))
