@@ -18,6 +18,8 @@
 
 # 然后通过约束条件, 减少时间复杂度.
 # 嵌套定义
+from typing import List
+
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
         res = []
