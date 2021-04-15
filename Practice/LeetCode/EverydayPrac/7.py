@@ -8,6 +8,7 @@
 # 时间复杂度：O(nlogn)，即为对数组 nums 进行排序的时间复杂度。
 #
 # 空间复杂度：O(logn)，即为排序需要使用的栈空间。
+from typing import List
 
 class Solution:
     def arrayPairSum(self, nums: List[int]) -> int:
