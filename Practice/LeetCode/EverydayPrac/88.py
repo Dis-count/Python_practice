@@ -67,7 +67,7 @@ class Solution:
 class Solution:
     def numDecodings(self, s: str) -> int:
         n = len(s)
-        s = ' ' + s
+        s = ' ' + s   # One Space
         f = [0] * 3
         f[0] = 1
         for i in range(1,n + 1):

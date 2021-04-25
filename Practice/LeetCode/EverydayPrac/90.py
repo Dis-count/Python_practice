@@ -15,4 +15,3 @@
 #
 # Input: nums = [1,2,4,8]
 # Output: [1,2,4,8]
-https://mp.weixin.qq.com/s/flSKHmixuGPJRdjUj_mPdw

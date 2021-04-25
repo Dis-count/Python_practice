@@ -1,5 +1,5 @@
 # 363. Max Sum of Rectangle No Larger Than K
-# Given an m x n matrix matrix and an integer k, return the max sum of a rectangle in the matrix such that its sum is no larger than k.
+# Given an (m x n matrix) matrix and an integer k, return the max sum of a rectangle in the matrix such that its sum is no larger than k.
 #
 # It is guaranteed that there will be a rectangle with a sum no larger than k.
 #
@@ -14,4 +14,4 @@
 # Input: matrix = [[2,2,-1]], k = 3
 # Output: 3
 
-https://leetcode-cn.com/problems/max-sum-of-rectangle-no-larger-than-k/solution/ju-xing-qu-yu-bu-chao-guo-k-de-zui-da-sh-70q2/
+# 转化为「在一维数组中，求解和不超过 K 的最大连续子数组之和」
