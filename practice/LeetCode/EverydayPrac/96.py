@@ -42,3 +42,21 @@ class Solution(object):
 
 # 时间复杂度：O(sqrt(c))
 # 空间复杂度：O(1)
+
+
+#  双指针
+
+class Solution:
+    def judgeSquareSum(self, c: int) -> bool:
+        l, r = 0, int(math.sqrt(c))
+        while l <= r:
+            cur = l * l + r * r
+            if cur == c:
+                return True
+            elif cur > c:
+                r -= 1
+            else:
+                l += 1
+        return False
+
+#  费马平方和定理的转化还不太清楚

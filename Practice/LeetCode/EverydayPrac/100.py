@@ -18,18 +18,18 @@
 # Explanation: There is no way to jump to the last stone as the gap between the 5th and 6th stone is too large.
 
 
-# 状态定义和参数：s(i, step) 表示当前是第i块时候，通过step步过来的
+# 状态定义和参数：s(i, step) 表示当前是第 i 块时候，通过 step 步过来的
 
-#  记忆化递归 (带标记的深度优先 DFS)
+#  记忆化递归 (带标记的深度优先 DFS)  ->  动态规划
 
 class Solution:
     def canCross(self, stones: List[int]) -> bool:
 
         if stones[1] - stones[0] > 1: return False
 
-        stonesSet = set(stones) # 变成Set， 加速检索
+        stonesSet = set(stones) # 变成 Set， 加速检索
 
-        @functools.lru_cache(None) #加上备忘录，去掉重复计算
+        @functools.lru_cache(None) # 加上备忘录，去掉重复计算
         def helper(i, step):
             # 状态，表示当前是第几块石头，是走几步走过来的。
             if i == stones[-1]:
@@ -54,23 +54,15 @@ class Solution:
 
         return helper(stones[1], stones[1] - stones[0])
 
-
-
-
-
-#  双指针
-
+# 动态规划
 class Solution:
-    def judgeSquareSum(self, c: int) -> bool:
-        l, r = 0, int(math.sqrt(c))
-        while l <= r:
-            cur = l * l + r * r
-            if cur == c:
-                return True
-            elif cur > c:
-                r -= 1
-            else:
-                l += 1
-        return False
-
-#  费马平方和定理的转化还不太清楚
+    def canCross(self, stones) -> bool:
+        new_stone = set(stones)
+        dp = collections.defaultdict(set)
+        dp[0] = {0}
+        for num in new_stone:
+            for step in dp[num]:
+                for i in [step-1, step, step+1]:
+                    if i>0 and num+i in new_stone:
+                        dp[num+i].add(i)
+        return len(dp[stones[-1]]) > 0
