@@ -17,11 +17,26 @@
 
 class Solution:
     def leastBricks(self, wall: List[List[int]]) -> int:
-        res = {0: 0}
+        res = {0: 0} # 字典
         for lvl in wall:
             pos = 0
             for brick in lvl[:-1]:
                 pos += brick
                 res[pos] = res.get(pos, 0) + 1
         print(res)
-        return len(wall) - max(res.values()) 
+        return len(wall) - max(res.values())
+
+wall = [[1,2,2,1],[3,1,2],[1,3,2],[2,4],[3,1,2],[1,3,1,1]]
+
+for lvl in wall:
+    pos = 0
+    for brick in lvl[:-1]:
+        pos += brick
+        res[pos] = res.get(pos, 0) + 1
+lvl = [1,2,2,1]
+lvl[:-1]
+pos = 3
+res = {0: 0}
+res[pos] = res.get(pos, 0) + 1
+res.values()
+res
