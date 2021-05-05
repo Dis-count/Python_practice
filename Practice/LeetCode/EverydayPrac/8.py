@@ -5,6 +5,7 @@
 # 重构后的矩阵需要将原始矩阵的所有元素以相同的行遍历顺序填充。
 #
 # 如果具有给定参数的reshape操作是可行且合理的，则输出新的重塑矩阵；否则，输出原始矩阵。
+from typing import List
 
 class Solution:
     def matrixReshape(self, nums: List[List[int]], r: int, c: int) -> List[List[int]]:

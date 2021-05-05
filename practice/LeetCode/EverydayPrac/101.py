@@ -14,7 +14,7 @@
 #
 # Input: wall = [[1],[1],[1]]
 # Output: 3
-
+from typing import List
 class Solution:
     def leastBricks(self, wall: List[List[int]]) -> int:
         res = {0: 0} # 字典

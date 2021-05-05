@@ -21,6 +21,7 @@
 # P[right]−P[left−1]  小于等于 K。这样一来，我们就可以容易地解决这个问题了。
 
 # 二分查找
+from typing import List
 class Solution:
     def longestOnes(self, A: List[int], K: int) -> int:
         n = len(A)

@@ -28,7 +28,7 @@
 #
 # 对于 Python 语言，力扣平台支持 sortedcontainers，但其没有默认被导入（import）。读者可以参考 Python Sorted Containers 了解该第三方库的使用方法。
 from sortedcontainers import SortedList
-
+from typing import List
 class Solution:
     def longestSubarray(self, nums: List[int], limit: int) -> int:
         s = SortedList()
