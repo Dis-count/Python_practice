@@ -2,7 +2,6 @@
 
 # 输入：head = [1,2,3,4,5], k = 2
 # 输出：[4,5,1,2,3]
-
 class Solution:
     def rotateRight(self, head, k):
         if not head or not head.next: return head
