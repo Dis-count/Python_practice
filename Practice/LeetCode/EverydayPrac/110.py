@@ -19,6 +19,8 @@
 # 注意 之前的题目  得到第一位就可以得到 结果。
 # 同时 注意 n 是 odd。因此 隔位异或可以得到 好的结果。
 
+from typing import List
+from functools import reduce
 class Solution:
     def decode(self, encoded: List[int]) -> List[int]:
         n = len(encoded) + 1
@@ -36,3 +38,7 @@ class Solution:
 # 复杂度分析
 # 时间复杂度：O(n)，其中 n 是原始数组 perm 的长度。计算 total 和 odd 各需要遍历长度为 n−1 的数组 encoded 一次，计算原数组 perm 的每个元素值也需要遍历长度为 n-1 的数组 encoded 一次。
 # 空间复杂度：O(1)。注意空间复杂度不考虑返回值。
+
+import operator
+n = 10
+total = reduce(operator.xor, range(1, n + 1))
