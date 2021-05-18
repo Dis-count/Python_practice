@@ -23,6 +23,8 @@
 # Output: [8,0,4,4]
 
 #  树状数组
+
+from typing import List
 class Solution:
     def xorQueries(self, arr: List[int], queries: List[List[int]]) -> List[int]:
         n, m = len(arr), len(queries)
@@ -61,6 +63,13 @@ class Solution:
     def xorQueries(self, arr: List[int], queries: List[List[int]]) -> List[int]:
         prexor = list(accumulate([0] + arr, xor))
         return [prexor[i] ^ prexor[j + 1] for i, j in queries]
+
+
+arr = [4,8,2,10]
+queries = [[2,3],[1,3],[0,0],[0,3]]
+from itertools import accumulate
+from operator import xor
+list(accumulate([0] + arr, xor))
 
 
 # 时间复杂度：令 arr 数组长度为 n，qs 数组的长度为 m。预处理前缀和数组复杂度为 O(n)；查询的复杂度为 O(m)。整体复杂度为 O(n+m)
