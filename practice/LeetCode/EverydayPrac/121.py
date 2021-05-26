@@ -9,7 +9,6 @@
 #
 # Return the maximum number of connecting lines we can draw in this way.
 #
-#
 # Example 1:
 #
 # Input: nums1 = [1,4,2], nums2 = [1,2,4]
@@ -28,6 +27,10 @@
 # Output: 2
 
 
+# f[i][j] 代表考虑 s1 的前 i 个字符、考虑 s2 的前 j 的字符，形成的最长公共子序列长度。
+
+from typing import List
+
 class Solution:
     def maxUncrossedLines(self, nums1: List[int], nums2: List[int]) -> int:
         m, n = len(nums1), len(nums2)
@@ -41,3 +44,8 @@ class Solution:
                     dp[i + 1][j + 1] = max(dp[i][j + 1], dp[i + 1][j])
 
         return dp[m][n]
+
+nums1 = [2,5,1,2,5]
+nums2 = [10,5,2,1,5,2]
+m, n = len(nums1), len(nums2)
+dp = [[0] * (n + 1) for _ in range(m + 1)]
