@@ -14,3 +14,17 @@ $$\bar{a}_{i}^{T} x+\Phi^{-1}(p)\left\|\Sigma_{i}^{1 / 2} x\right\|_{2} \leq b_{
 A polyhedron is a set described by a finite number of affine inequalities and equalities:
 $$\mathcal{P}=\{x: A x \leq b, \quad C x=d\}$$
 where $A$, $C$ are matrices, $b$, $d$ are vectors, and inequalities are understood componentwise. Sometimes bounded polyhedra are referred to as polytopes.
+
+
+机会约束规划-- 确定等价类
+
+设随机变量 $\xi(w)$ 的概率分布函数为 $\Phi(\dot)$
+对给定的置信水平 $\alpha$, 必存在一个数 $K_{\alpha}$ 使得
+
+$P\left\{\xi(w) \geq K_{\alpha}\right\}=\alpha$
+
+$P\{\xi(w) \geq h(x)\} \geq \alpha \Leftrightarrow h(x) \leq K_{\alpha}$
+其中，
+$\Phi\left(K_{\alpha}\right)=1-\alpha, K_{\alpha}=\Phi^{-1}(1-\alpha)$
+
+https://wenku.baidu.com/view/80eea79ba200a6c30c22590102020740bf1ecd5f.html
