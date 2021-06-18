@@ -19,4 +19,29 @@
 # If Lee takes the last 5, then the board is [3, 4], and Alex takes 4 to win with 9 points.
 # This demonstrated that taking the first 5 was a winning move for Alex, so we return true.
 
-#  晚上问刘老师的问题  会议报销？找老师要材料？ 签字事项。 已有工作基础？  //试卷打印？ 19 晚上6-8 需要监考吗？
+# 定义二维数组 dp，其行数和列数都等于石子的堆数，dp[i][j] 表示当剩下的石子堆为下标 i 到下标 j 时，即在下标范围 [i, j] 中，当前玩家与另一个玩家的石子数量之差的最大值，注意当前玩家不一定是先手
+from typing import List
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        length = len(piles)
+        dp = [[0] * length for _ in range(length)]
+        for i, pile in enumerate(piles):
+            dp[i][i] = pile
+        for i in range(length - 2, -1, -1):
+            for j in range(i + 1, length):
+                dp[i][j] = max(piles[i] - dp[i + 1][j], piles[j] - dp[i][j - 1])
+        return dp[0][length - 1] > 0
+
+# 一维优化
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        length = len(piles)
+        dp = [0] * length
+        for i, pile in enumerate(piles):
+            dp[i] = pile
+        for i in range(length - 2, -1, -1):
+            for j in range(i + 1, length):
+                dp[j] = max(piles[i] - dp[j], piles[j] - dp[j - 1])
+        return dp[length - 1] > 0
+
+#  数学分析  先手有必胜策略。

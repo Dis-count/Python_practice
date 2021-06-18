@@ -21,7 +21,7 @@
 # Explanation: Player 1 first chooses 1. Then player 2 has to choose between 5 and 7. No matter which number player 2 choose, player 1 can choose 233.
 # Finally, player 1 has more score (234) than player 2 (12), so you need to return True representing player1 can win.
 
-# M1 利用迭代模拟博弈过程
+# M1 利用递归模拟博弈过程
 
 from typing import List
 class Solution:
@@ -42,3 +42,27 @@ class Solution:
 #  重复子问题  使用动态规划
 
 # 定义二维数组 dp，其行数和列数都等于数组的长度，dp[i][j] 表示当数组剩下的部分为下标 i 到下标 j 时，当前玩家与另一个玩家的分数之差的最大值，注意当前玩家不一定是先手。
+
+class Solution:
+    def PredictTheWinner(self, nums: List[int]) -> bool:
+        length = len(nums)
+        dp = [[0] * length for _ in range(length)]
+        for i, num in enumerate(nums):
+            dp[i][i] = num
+        for i in range(length - 2, -1, -1):
+            for j in range(i + 1, length):
+                dp[i][j] = max(nums[i] - dp[i + 1][j], nums[j] - dp[i][j - 1])
+        return dp[0][length - 1] >= 0
+
+#  一维优化
+
+class Solution:
+    def PredictTheWinner(self, nums: List[int]) -> bool:
+        length = len(nums)
+        dp = [0] * length
+        for i, num in enumerate(nums):
+            dp[i] = num
+        for i in range(length - 2, -1, -1):
+            for j in range(i + 1, length):
+                dp[j] = max(nums[i] - dp[j], nums[j] - dp[j - 1])
+        return dp[length - 1] >= 0
