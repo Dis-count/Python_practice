@@ -21,6 +21,9 @@
 # Output: "999999999999999999"
 # Explanation: 1000000000000000000 base 999999999999999999 is 11.
 
+#  思路： 1. 根据 k^m 等比数列求和公式 首先确定 ‘位数 m’ 的取值范围--上界  从上界向下枚举或者二分  之后检验对应的 k 值是否合法。
+#  2. 确定 k 的取值范围 k=⌊m\sqrt(n)​⌋
+import time
 class Solution:
     def smallestGoodBase(self, n: str) -> str:
 
@@ -29,9 +32,10 @@ class Solution:
             ans = 0
             for _ in range(m+1):
                 ans = ans*x + 1
-            return ans
+            return ans   # This function is used to calculate the geometric series.
         ans = float("inf")
-        for i in range(1, 64):
+        for i in range(64,0,-1):
+        # for i in range(1,64):
             l = 2
             r = num
             while l < r:
@@ -46,3 +50,12 @@ class Solution:
                     r = mid
 
         return str(ans)
+
+a = Solution()
+
+start = time.time()
+a.smallestGoodBase(1000000000000000000)
+end = time.time()
+print(end-start)
+
+check(5,3)
