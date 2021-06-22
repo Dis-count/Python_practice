@@ -45,6 +45,8 @@
 # t.death("bob"); // order: king > andy > matthew > bob > alex > asha > catherine
 # t.getInheritanceOrder(); // return ["king", "andy", "matthew", "alex", "asha", "catherine"]
 
+# 多叉树的前序遍历
+from typing import List
 class ThroneInheritance:
 
     def __init__(self, kingName: str):
