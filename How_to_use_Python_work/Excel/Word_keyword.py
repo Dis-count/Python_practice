@@ -39,3 +39,6 @@ for i in cv_list:
         f.write(str1)
 
 # 原文链接：https://blog.csdn.net/geoker/article/details/80149463
+#  1、 数据抓取  导入表格
+#  2、 word 文字匹配
+#  3、 建立多链接的文件关系

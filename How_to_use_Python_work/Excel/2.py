@@ -1,4 +1,4 @@
-# xlrd读excel
+# xlrd 读 excel
 import xlrd
 
 book = xlrd.open_workbook('data.xlsx')
@@ -14,7 +14,7 @@ print(u'第3列值 ',col3_values)
 cell_3_3 = sheet1.cell(2,2).value
 print(u'第3行第3列的单元格的值：',cell_3_3)
 
-# xlwt 写excel
+# xlwt 写 excel
 import xlwt  # 不支持excel2007的xlsx格式
 
 workbook = xlwt.Workbook()
